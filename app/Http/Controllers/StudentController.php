@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class StudentController extends Controller
 {
@@ -35,18 +36,52 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|unique:student',
+            'department' => 'required|max:255',
+        ]);
 
+        $stud = new Student;
+        $stud->name = $request->name;
+        $stud->email = $request->email;
+        $stud->reg_no = $request->reg_no;
+        $stud->degree = $request->degree;
+        $stud->department = $request->department;
+        $stud->year = $request->year;
+        $stud->semester = $request->semester;
+        $stud->section = $request->section;
+        $stud->status = $request->status;
+        $stud->save();
+
+        if($stud->save()){
+            return response()->json('success');
+        }else{
+            return response()->json('failed');
+        }
+        
+
+    }
+ /**
+     * Display the specified resource.
+     *
+     * @param  \App\Student  $student
+     * @return \Illuminate\Http\Response
+     */
+    public function showAll()
+    {
+        $students = Student::where('status', 'current')->get();
+        return response()->json($students);
+    }
     /**
      * Display the specified resource.
      *
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Requset $request)
     {
-        //
+        return response()->json(Student::all());
     }
 
     /**
@@ -57,7 +92,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        return view('student.edit');
     }
 
     /**
@@ -69,7 +104,23 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        $stud = Student::findOrFail($request->student_id);
+        $stud->name = $request->name;
+        $stud->email = $request->email;
+        $stud->reg_no = $request->reg_no;
+        $stud->degree = $request->degree;
+        $stud->department = $request->department;
+        $stud->year = $request->year;
+        $stud->semester = $request->semester;
+        $stud->section = $request->section;
+        $stud->status = $request->status;
+        $stud->save();
+
+        if($stud->save()){
+            return response()->json('success');
+        }else{
+            return response()->json('failed');
+        }
     }
 
     /**

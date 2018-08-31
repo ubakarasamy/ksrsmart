@@ -2,9 +2,12 @@
 
 
 @section('content')
+
 <div id="app">
-<student-create></student-create>
+	<student-edit></student-edit>
 </div>
 
-
 @endsection
+
+
+ 

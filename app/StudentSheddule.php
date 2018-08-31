@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentSheddule extends Model
 {
-    //
+    protected $table = 'student_sheddule';
 }

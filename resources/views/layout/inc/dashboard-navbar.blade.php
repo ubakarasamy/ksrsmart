@@ -4,7 +4,7 @@
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="brand">
 				<a href="#">
-                <img src="assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo">
+                <img src="{{ asset('assets/img/logo-dark.png') }}" alt="Klorofil Logo" class="img-responsive logo">
                 </a>
 			</div>
 			<div class="container-fluid">

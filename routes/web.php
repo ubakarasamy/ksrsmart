@@ -20,4 +20,7 @@ Route::get('/', 'HomeController@index')->name('home');
 //Students
 Route::get('/students', 'StudentController@index')->name('students');
 
-Route::get('/students/create', 'StudentController@create')->name('student-create');
+Route::get('/student/create', 'StudentController@create')->name('student.create');
+
+Route::post('/student/{{id}}/edit', 'StudentController@edit')->name('student-edit');
+
