@@ -9,7 +9,6 @@ class TestController extends Controller
 {
     public function hello(){
         $data = ['name' => 'Abigail', 'state' => 'CA'];
-        
         return response()->json($data);
     }
 }

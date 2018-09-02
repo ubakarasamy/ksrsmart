@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Student;
+use App\StudentSubject;
+use App\StudentSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -133,4 +135,24 @@ class StudentController extends Controller
     {
         //
     }
+
+    public function test()
+    {
+ 
+//         $comments = StudentSubject::find(1)->studentschedule;
+
+// foreach ($comments as $comment) {
+//     print_r($comment->day);
+//     print_r($comment->hour);
+// }
+//     }
+
+            $sub = StudentSchedule::find(3)->studentsubject;
+
+            return $sub;
 }
+
+}
+
+
+

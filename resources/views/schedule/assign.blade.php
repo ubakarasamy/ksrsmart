@@ -4,10 +4,7 @@
 @section('content')
 
 <div id="app">
-	<student-edit></student-edit>
+	<schedule-assign></schedule-assign>
 </div>
 
 @endsection
-
-
- 

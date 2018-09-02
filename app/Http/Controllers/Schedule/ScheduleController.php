@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Schedule;
 
-use App\StudentSheddule;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Response;
+use App\StudentSchedule;
+use App\Academic;
+use App\StudentSubject;
 
-class StudentShedduleController extends Controller
+class ScheduleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +18,7 @@ class StudentShedduleController extends Controller
      */
     public function index()
     {
-        //
+        return view('schedule.index');
     }
 
     /**
@@ -22,9 +26,9 @@ class StudentShedduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function assignShedule()
     {
-        //
+        return view('schedule.assign');
     }
 
     /**
@@ -35,27 +39,38 @@ class StudentShedduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json($request);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\StudentSheddule  $studentSheddule
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(StudentSheddule $studentSheddule)
+    public function showAllSchedules()
     {
-        //
+            $aca = Academic::findOrFail(1);
+
+        $schedules = StudentSchedule::where('semester_start', $aca->semester_start)->get();
+
+        foreach ($schedules as $schedule) {
+
+            $schedule->subject_name = StudentSubject::find($schedule->student_subject_id)->subject_name;
+
+        }
+
+        return response()->json($schedules);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\StudentSheddule  $studentSheddule
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(StudentSheddule $studentSheddule)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +79,10 @@ class StudentShedduleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\StudentSheddule  $studentSheddule
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StudentSheddule $studentSheddule)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +90,10 @@ class StudentShedduleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\StudentSheddule  $studentSheddule
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(StudentSheddule $studentSheddule)
+    public function destroy($id)
     {
         //
     }

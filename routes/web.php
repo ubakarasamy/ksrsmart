@@ -19,8 +19,18 @@ Route::get('/', 'HomeController@index')->name('home');
 
 //Students
 Route::get('/students', 'StudentController@index')->name('students');
-
 Route::get('/student/create', 'StudentController@create')->name('student.create');
 
-Route::post('/student/{{id}}/edit', 'StudentController@edit')->name('student-edit');
 
+
+//Schedule
+Route::get('/subject', 'Schedule\ScheduleController@index')->name('schedule-home');
+
+Route::get('/schedule', 'Schedule\ScheduleController@assignShedule')->name('schedule-assign');
+
+
+
+
+
+
+Route::get('test', 'StudentController@test');

@@ -20,3 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('students', 'StudentController@showAll');
 Route::post('student/store', 'StudentController@store');
 Route::put('student/update', 'StudentController@update');
+
+
+Route::get('schedule/subject/show', 'Schedule\SubjectController@show');
+Route::post('schedule/subject/store', 'Schedule\SubjectController@store');
+
+
+Route::get('schedule/show', 'Schedule\ScheduleController@showAllSchedules');
+Route::post('schedule/store', 'Schedule\ScheduleController@store');

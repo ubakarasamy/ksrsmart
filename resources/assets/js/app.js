@@ -16,7 +16,9 @@ window.Vue = require('vue');
  */
 Vue.component('student-index', require('./components/Student/Student.vue'));
 Vue.component('student-create', require('./components/Student/StudentCreate.vue'));
-Vue.component('student-edit', require('./components/Student/StudentEdit.vue'));
+
+Vue.component('schedule-index', require('./components/Schedule/Schedule.vue'));
+Vue.component('schedule-assign', require('./components/Schedule/ScheduleAssign.vue'));
 
 const app = new Vue({
     el: '#app'

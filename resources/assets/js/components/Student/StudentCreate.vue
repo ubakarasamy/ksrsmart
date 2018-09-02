@@ -6,6 +6,7 @@
 
 	</div>
 <div class="panel-body">
+    <a href="/students" class="btn btn-primary float-right">Back</a>
 	<div class="row">
         <div class="container">
             <div class="col-sm-6">

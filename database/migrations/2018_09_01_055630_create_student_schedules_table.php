@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentSubjectTable extends Migration
+class CreateStudentSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,18 @@ class CreateStudentSubjectTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_subject', function (Blueprint $table) {
+        Schema::create('student_schedules', function (Blueprint $table) {
             $table->increments('id');
             $table->string('degree');
             $table->string('department');
-            $table->string('year');
+            $table->integer('year');
             $table->integer('semester');
             $table->string('section');
-            $table->string('subject_name');
-            $table->string('subject_id');
-            $table->string('subject_overall'); 
-            $table->string('academic_semester');
+            $table->string('day');
+            $table->integer('hour');
+            $table->integer('student_subject_id')->unsigned();;
+            $table->foreign('student_subject_id')->references('id')->on('student_subjects')->onDelete('cascade');
+            $table->date('semester_start');
             $table->timestamps();
         });
     }
@@ -35,6 +36,6 @@ class CreateStudentSubjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_subject');
+        Schema::dropIfExists('student_schedules');
     }
 }

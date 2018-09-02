@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentShedduleTable extends Migration
+class CreateStudentSubjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,17 @@ class CreateStudentShedduleTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_sheddule', function (Blueprint $table) {
+        Schema::create('student_subjects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('degree');
             $table->string('department');
-            $table->string('year');
+            $table->integer('year');
             $table->integer('semester');
             $table->string('section');
-            $table->string('day');
-            $table->string('subject_name');
             $table->string('subject_id');
-            $table->string('subject_overall'); 
-            $table->string('subject_staff');
-            $table->string('academic_semester'); //we can find the current semester
+            $table->string('subject_name');
+            $table->string('user_id');
+            $table->date('semester_start');
             $table->timestamps();
         });
     }
@@ -37,6 +35,6 @@ class CreateStudentShedduleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_sheddule');
+        Schema::dropIfExists('student_subjects');
     }
 }
