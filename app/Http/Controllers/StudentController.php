@@ -83,7 +83,8 @@ class StudentController extends Controller
      */
     public function show(Requset $request)
     {
-        return response()->json(Student::all());
+        $students = Student::where('status', 'current')->get();
+        return response()->json($students);
     }
 
     /**

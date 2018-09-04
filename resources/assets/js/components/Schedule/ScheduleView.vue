@@ -4,11 +4,10 @@
     <!-- OVERVIEW -->
 <div class="panel panel-headline">
 	<div class="panel-heading">
-		<h3 class="panel-title">Assign Schedule</h3>
+		<h3 class="panel-title">View Schedule</h3>
 	</div>
 	<div class="panel-body">
 		<div class="row">
-            <form @submit.prevent="assignSchedule()">
             <div class="select-class"  v-if="SelectionBar === true">
                 <div class="row">
                     <div class="form-group col-sm-2">
@@ -123,33 +122,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="frm">
-                    <div class="row">
-                    <div class="form-group col-sm-2"> 
-                        <label for="day">Day</label>
-                    <select class="form-control" name="day" id="day" v-model="Day_selected">
-                        <option v-for="Day in Days">{{Day.text}}</option>
-                    </select><br>
-                    </div>
-                    <div class="form-group col-sm-2"> 
-                    <label for="hour">Hour</label>
-                    <select class="form-control" name="hour" id="hour" v-model="Hour_selected">
-                        <option v-for="Hour in Hours">{{Hour.text}}</option>
-                    </select><br>
-                    </div>
-                    <div class="form-group col-sm-2"> 
-                    <label for="Subject">Subject</label>
-                    <select class="form-control" name="Subject" id="Subject" v-model="Subject_selected">
-                        <option v-for="Subject in filterSubjects">{{Subject.subject_name}}</option>
-                    </select><br>
-                    </div>
-                    <br>
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                    </div>
-                </div>
             </div>
 
-            </form>
 		</div>
 	</div>
 </div>
@@ -282,7 +256,7 @@ export default {
                     return response.json();
                 }).then(data => {
                    
-                    console.log(data);
+                    // console.log(data);
                 }).catch(err => {
                     console.log(err);
                 });
@@ -365,7 +339,7 @@ computed:{
         }else{
             return Schedules.filter(function(Schedule){
                 return (
-                    (degree === "" || degree === Schedule.degree)
+                    (department === "" || department === Schedule.department)
                     && (department === "" || department === Schedule.department)
                     && (year === "" || Number(year) === Schedule.year)
                     && (semester === "" || Number(semester) === Schedule.semester)

@@ -2,84 +2,161 @@
 
 namespace App\Http\Controllers;
 
-use App\StudentAttendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+
+use App\StudentAttendance;
+use App\StudentSchedule;
+use App\StudentAttendanceRecord;
+
 
 class StudentAttendanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function index()
     {
-        //
+        return view('studentattendance.make');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
-        //
+        $ifExit = StudentAttendance::where([
+            ['schedule_id', '=', $request->schedule_id],
+            ['date', '=', $request->date],
+            ])->first();    
+
+        if($ifExit !== null){
+            return response()->json($ifExit);
+        }else{
+            $attendance = new StudentAttendance;
+            $attendance->schedule_id = $request->schedule_id;
+            $attendance->date = $request->date;
+            $attendance->alternate_staff = $request->alternative_staff;
+            $attendance->edit_permission = true;
+            $attendance->save();
+            return response()->json($attendance);
+        }
+        //return response()->json($attendance);
+       
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\StudentAttendance  $studentAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function show(StudentAttendance $studentAttendance)
-    {
-        //
+    public function setStatus(Request $request){
+
+        $ifExit = StudentAttendanceRecord::where([
+            ['student_id', '=', $request->student_id],
+            ['schedule_id', '=', $request->schedule_id],
+            ['date', '=', $request->date],
+            ['student_attendance_id', '=', $request->student_attendance_id]
+            ])->first();    
+        if($ifExit !== null){
+
+            $ifExit->student_id = $request->student_id;
+            $ifExit->schedule_id = $request->schedule_id;
+            $ifExit->date = $request->date;
+            $ifExit->student_attendance_id = $request->student_attendance_id;
+
+            if(($ifExit->status === "absent" && $request->status !== "absent") || ($ifExit->status === "leave" && $request->status !== "leave")){
+               
+                    $ifExit->present = true;
+               
+            }else{
+                $ifExit->present = false;
+            }
+            
+            $ifExit->status = $request->status;
+            $ifExit->save();
+            return response()->json('exists');
+        }else{
+            $ifExit = new StudentAttendanceRecord;
+            $ifExit->student_id = $request->student_id;
+            $ifExit->schedule_id = $request->schedule_id;
+            $ifExit->date = $request->date;
+            $ifExit->student_attendance_id = $request->student_attendance_id;
+            $ifExit->status = $request->status;
+
+            if($request->status !== "absent" || $request->status === "leave"){
+                $ifExit->present = true;
+            }else{
+                $ifExit->present = false;
+            }
+
+            $ifExit->save();
+            return response()->json($request);
+        }
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\StudentAttendance  $studentAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(StudentAttendance $studentAttendance)
-    {
-        //
+    public function viewByDay(){
+        return view('studentattendance.viewbyday');
+    }
+    public function viewByMonth(){
+        return view('studentattendance.viewbymonth');
+    }
+    public function viewByOverall(){
+        return view('studentattendance.viewbyoverall');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\StudentAttendance  $studentAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, StudentAttendance $studentAttendance)
-    {
-        //
+
+
+    public function ViewJsonByDate(Request $request){
+
+        $fromdate = $request->fromdate;
+        $todate = $request->todate;
+        $degree = $request->degree;
+        $department = $request->department;
+        $year = $request->year;
+        $semester = $request->semester;
+        $section = $request->section;  
+        
+        // IMPORTANT
+        $attendanceHours = StudentAttendance::where([
+            ['date', '>=', $fromdate],
+            ['date', '<=', $todate],
+        ])->get();
+
+        $attendanceHours; //all working Hours
+
+        $AWHs = [];
+
+        $AStHrs = [];
+
+        foreach ($attendanceHours as $attendanceHour) {
+            $hour = StudentSchedule::where([
+                ['id', '=', $attendanceHour->schedule_id],
+                ['degree', '=', $degree],
+                ['department', '=', $department],
+                ['year', '=', $year],
+                ['semester', '=', $semester],
+                ['section', '=', $section]
+            ])->first();
+
+            array_push($AWHs, $hour); //all working hours for class
+
+            $attt = StudentAttendanceRecord::where([
+                ['schedule_id', '=', $hour->id],
+                ['date', '>=', $fromdate],
+                ['date', '<=', $todate]
+            ])->get();
+            
+            
+            array_push($AStHrs, $attt); //all present datas for class
+
+        }
+
+        
+
+
+       
+
+
+
+       
+
+        return response()->json(['working_hours'=>$AWHs,'atdatas'=>$AStHrs]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\StudentAttendance  $studentAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(StudentAttendance $studentAttendance)
-    {
-        //
-    }
+
+
+
+
 }

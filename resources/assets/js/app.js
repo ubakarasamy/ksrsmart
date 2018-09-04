@@ -19,6 +19,13 @@ Vue.component('student-create', require('./components/Student/StudentCreate.vue'
 
 Vue.component('schedule-index', require('./components/Schedule/Schedule.vue'));
 Vue.component('schedule-assign', require('./components/Schedule/ScheduleAssign.vue'));
+Vue.component('schedule-view', require('./components/Schedule/ScheduleView.vue'));
+
+
+Vue.component('student-attendance-create', require('./components/StudentAttendance/StudentAttendanceCreate.vue'));
+Vue.component('student-attendance-viewbyday', require('./components/StudentAttendance/StudentAttendanceViewByDay.vue'));
+Vue.component('student-attendance-viewbymonth', require('./components/StudentAttendance/StudentAttendanceViewByMonth.vue'));
+Vue.component('student-attendance-viewbyoverall', require('./components/StudentAttendance/StudentAttendanceViewByOverall.vue'));
 
 const app = new Vue({
     el: '#app'

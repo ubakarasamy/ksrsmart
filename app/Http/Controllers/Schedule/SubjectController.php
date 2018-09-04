@@ -24,6 +24,16 @@ class SubjectController extends Controller
     {
         $aca = Academic::findOrFail(1);
 
+        $ifExists = StudentSubject::where([
+            ['degree', '=', $request->degree],
+            ['department', '=', $request->department],
+            ['year', '=', $request->year],
+            ['semester', '=', $request->semester],
+            ['section', '=', $request->section],
+            ['subject_id', '=', $request->subject_id],
+            ['semester_start', '=', $aca->semester_start]
+        ])->first();
+        if($ifExists === null){
         $subject = new StudentSubject;
         $subject->degree = $request->degree;
         $subject->department = $request->department;
@@ -41,6 +51,9 @@ class SubjectController extends Controller
         }else{
             return response()->json('failed');
         }
+    }else{
+        return response()->json('exists');
+    }
 
     }
 

@@ -55,35 +55,35 @@
             <input v-model="email" type="email" class="form-control" placeholder="Email" id="email" name="email">
             <br>
             <label for="reg_no" class="">Register Number</label>
-            <input v-model="reg_no" type="text" class="form-control" placeholder="Register Number" id="reg_no" name="reg_no">
+            <input disabled="true" v-model="reg_no" type="text" class="form-control" placeholder="Register Number" id="reg_no" name="reg_no">
 			<br>
             <label for="degree" class="">Degree</label>
-            <select v-model="degree" class="form-control" id="degree" name="degree">
-                <option selected disabled>Choose</option>
+            <select disabled="true" v-model="degree" class="form-control" id="degree" name="degree">
+                <option selected >Choose</option>
 				<option v-for="degree_option in degree_options" v-bind:key="degree_option.value">{{degree_option.text}}</option>
 			</select>
             <br>
             <label for="department" class="">Department</label>
-			<select v-model="department" class="form-control" id="department" name="department">
-            <option selected disabled>Choose</option>
+			<select disabled="true" v-model="department" class="form-control" id="department" name="department">
+            <option selected >Choose</option>
 				<option v-for="department_option in department_options" v-bind:key="department_option.value">{{department_option.text}}</option>
 			</select>
             <br>
             <label for="year" class="">Year</label>
-			<select v-model="year" class="form-control" id="year" name="year">
-            <option selected disabled>Choose</option>
+			<select disabled="true" v-model="year" class="form-control" id="year" name="year">
+            <option selected >Choose</option>
 				<option v-for="year_option in year_options" v-bind:key="year_option.value">{{year_option.text}}</option>
 			</select>
             <br>
             <label for="semester" class="">Semester</label>
-			<select v-model="semester" class="form-control" id="semester" name="semester">
-            <option selected disabled>Choose</option>
+			<select disabled="true" v-model="semester" class="form-control" id="semester" name="semester">
+            <option selected >Choose</option>
 				<option v-for="semester_option in semester_options" v-bind:key="semester_option.value">{{semester_option.text}}</option>
 			</select>
             <br>
             <label for="section" class="">Section</label>
-			<select v-model="section" class="form-control" id="section" name="section">
-            <option selected disabled>Choose</option>
+			<select disabled="true" v-model="section" class="form-control" id="section" name="section">
+            <option selected >Choose</option>
 				<option v-for="section_option in section_options" v-bind:key="section_option.value">{{section_option.text}}</option>
 			</select>
             <br>
@@ -204,7 +204,8 @@ export default {
                 }).then(response => {
                     return response.json();
                 }).then(data => {
-                    if(data = 'success'){
+                    const dt = data;
+                    if(dt === 'success'){
                         alert('Successfully Updated');
                     }else{
                         alert('Something went wrong!');

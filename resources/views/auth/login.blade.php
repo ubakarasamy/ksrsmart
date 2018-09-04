@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout.app-wnav')
 
 @section('content')
 <div class="container">

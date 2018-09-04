@@ -28,3 +28,10 @@ Route::post('schedule/subject/store', 'Schedule\SubjectController@store');
 
 Route::get('schedule/show', 'Schedule\ScheduleController@showAllSchedules');
 Route::post('schedule/store', 'Schedule\ScheduleController@store');
+
+Route::post('student/attendance/store', 'StudentAttendanceController@store');
+
+Route::post('student/attendance/setstatus', 'StudentAttendanceController@setStatus');
+
+
+Route::post('student/attendance/view/bydate', 'StudentAttendanceController@ViewJsonByDate');

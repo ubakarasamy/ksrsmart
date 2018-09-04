@@ -4,7 +4,7 @@
     <!-- OVERVIEW -->
 <div class="panel panel-headline">
 	<div class="panel-heading">
-		<h3 class="panel-title">Student Schedule</h3>
+		<h3 class="panel-title">Add Subject</h3>
 	</div>
 	<div class="panel-body">
 		<div class="row">
@@ -81,13 +81,13 @@
                     <div class="container">
                         <h3>Create subject</h3>
                     <label for="subject_name" class="">Subject Name</label>
-                    <input v-model="subject_name" type="text" class="form-control" placeholder="Subject Name" id="subject_name" name="subject_name">
+                    <input required="true" v-model="subject_name" type="text" class="form-control" placeholder="Subject Name" id="subject_name" name="subject_name">
                     <br>
                     <label for="subject_id" class="">Subject ID</label>
-                    <input v-model="subject_id" type="text" class="form-control" placeholder="Subject ID" id="subject_id" name="subject_id">
+                    <input required="true" v-model="subject_id" type="text" class="form-control" placeholder="Subject ID" id="subject_id" name="subject_id">
                     <br>
                     <label for="staff_id" class="">Staff ID</label>
-                    <input v-model="staff_id" type="text" class="form-control" placeholder="Staff ID" id="staff_id" name="staff_id">
+                    <input required="true" v-model="staff_id" type="text" class="form-control" placeholder="Staff ID" id="staff_id" name="staff_id">
                     <br>
                     <button type="submit" class="btn btn-primary">Create</button>
                     </div>
@@ -180,11 +180,7 @@ export default {
                 }).then(response => {
                     return response.json();
                 }).then(data => {
-                    if(data = 'success'){
-                        alert('successfully Created');
-                    }else{
-                        alert('Something went wrong!');
-                    }
+                    
                     console.log(data);
                 }).catch(err => {
                     console.log(err);
@@ -217,7 +213,7 @@ computed:{
         }else{
             return Subjects.filter(function(subject){
                 return (
-                    (department === "" || department === subject.department)
+                    (degree === "" || degree === subject.degree)
                     && (department === "" || department === subject.department)
                     && (year === "" || Number(year) === subject.year)
                     && (semester === "" || Number(semester) === subject.semester)

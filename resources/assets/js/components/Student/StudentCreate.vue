@@ -147,7 +147,7 @@
                     department:this.department,
                     year:this.year,
                     semester:this.semester,
-                    section:this.semester,
+                    section:this.section,
                     status:this.status
                 }
 

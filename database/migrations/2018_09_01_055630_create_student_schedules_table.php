@@ -22,7 +22,7 @@ class CreateStudentSchedulesTable extends Migration
             $table->string('section');
             $table->string('day');
             $table->integer('hour');
-            $table->integer('student_subject_id')->unsigned();;
+            $table->integer('student_subject_id')->unsigned();
             $table->foreign('student_subject_id')->references('id')->on('student_subjects')->onDelete('cascade');
             $table->date('semester_start');
             $table->timestamps();
