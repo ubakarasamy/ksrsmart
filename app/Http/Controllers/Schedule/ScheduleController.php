@@ -59,6 +59,7 @@ class ScheduleController extends Controller
         $schedule->year = $request->year;
         $schedule->semester = $request->semester;
         $schedule->section = $request->section;
+        $schedule->staff_id = $request->staff_id;
         $schedule->day = $request->Day_selected;
         $schedule->hour = $request->Hour_selected;
         $schedule->student_subject_id = $request->Subject_selected;
@@ -85,10 +86,11 @@ class ScheduleController extends Controller
         $schedule->section = $request->section;
         $schedule->day = $request->Day_selected;
         $schedule->hour = $request->Hour_selected;
+        $schedule->staff_id = $request->staff_id;
         $schedule->student_subject_id = $request->Subject_selected;
         $schedule->semester_start = $aca->semester_start;
         $schedule->save();
-        return response()->json('updated');
+        return response()->json($request);
         }
         
     }

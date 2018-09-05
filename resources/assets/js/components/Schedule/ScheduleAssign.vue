@@ -176,6 +176,7 @@ export default {
             Subjects:[],
             Schedules:[],
 
+ 
             Hour_selected:'',
             Hours:[
                 {text:'1', value:'1'},
@@ -250,6 +251,7 @@ export default {
         assignSchedule(){
 
  var subb;
+ var staff;
                 var Subs;
      
                 Subs = this.Subjects;
@@ -257,6 +259,8 @@ export default {
                 for(var child in Subs){
                     if (Subs[child].subject_name === this.Subject_selected){
                         subb = Subs[child].id;
+
+                        staff = Subs[child].staff_id;
                     }
                 }
 
@@ -265,6 +269,7 @@ export default {
                     Hour_selected:this.Hour_selected,
                     Day_selected:this.Day_selected.toLowerCase(),
 
+                    staff_id: staff,
                     degree:this.degree,
                     department:this.department,
                     year:this.year,

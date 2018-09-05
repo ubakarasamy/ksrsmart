@@ -46122,6 +46122,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         assignSchedule: function assignSchedule() {
 
             var subb;
+            var staff;
             var Subs;
 
             Subs = this.Subjects;
@@ -46129,6 +46130,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var child in Subs) {
                 if (Subs[child].subject_name === this.Subject_selected) {
                     subb = Subs[child].id;
+
+                    staff = Subs[child].staff_id;
                 }
             }
 
@@ -46137,6 +46140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 Hour_selected: this.Hour_selected,
                 Day_selected: this.Day_selected.toLowerCase(),
 
+                staff_id: staff,
                 degree: this.degree,
                 department: this.department,
                 year: this.year,
@@ -47905,17 +47909,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+
             Studs: [],
             showForm: true,
             Schedules: [],
-            hour: '',
-            Schedule_id: '',
+            schedule_id: '',
             date: '',
             student_attendance_id: '',
+            is_sheduled_staff: '',
+            alternate_staff: '',
 
             Sstatus: 'default',
             atStatuses: [{ text: 'Present', value: 'present' }, { text: 'Absent', value: 'absent' }, { text: 'Leave', value: 'leave' }, { text: 'OD', value: 'od' }],
-            alternative_staff: 'null',
+            hour: '',
             hour_options: [{ text: '1', vale: '1' }, { text: '2', vale: '2' }, { text: '3', vale: '3' }, { text: '4', vale: '4' }, { text: '5', vale: '5' }, { text: '6', vale: '6' }, { text: '7', vale: '7' }],
             day: '',
             day_options: [{ text: 'Mon', vale: 'mon' }, { text: 'Tue', vale: 'tue' }, { text: 'Wed', vale: 'wed' }, { text: 'Thu', vale: 'thu' }, { text: 'Fri', vale: 'fri' }],
@@ -47936,7 +47942,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getAllStudents();
     },
 
+    props: ['authenticateduser'],
     methods: {
+        // GET ALL STUDENTS
         getAllStudents: function getAllStudents() {
             var _this = this;
 
@@ -47948,6 +47956,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return console.log(err);
             });
         },
+
+
+        // DISPLAY SUBJECT IN FRONT
         displaySubject: function displaySubject() {
             var degree = this.degree.toLowerCase();
             var department = this.department.toLowerCase();
@@ -47956,14 +47967,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var section = this.section;
             var day = this.day.toLowerCase();
             var hour = this.hour;
-
             if (degree !== "" && department !== "" && year !== "" && semester !== "" && section !== "" && day !== "" && hour !== "") {
-                this.Schedule_id = this.filterSchedules[0].id;
+                this.schedule_id = this.filterSchedules[0].id;
+                console.log(this.authenticateduser.id);
+                console.log(this.filterSchedules[0].staff_id);
+
+                if (this.authenticateduser.id !== this.filterSchedules[0].staff_id) {
+                    this.is_sheduled_staff = false;
+                    this.alternate_staff = this.authenticateduser.id;
+                } else {
+                    this.is_sheduled_staff = true;
+                    this.alternate_staff = null;
+                }
+
                 return '' + this.filterSchedules[0].subject_name;
             } else {
                 return '__';
             }
         },
+
+        // GET ALL SCHEDULES
         getAllShedules: function getAllShedules() {
             var _this2 = this;
 
@@ -47976,15 +47999,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return console.log(err);
             });
         },
-        createHour: function createHour() {
+
+
+        // CREATE DATE AND HOUR FOR GETTING OVERALL
+        createDateandHour: function createDateandHour() {
             var _this3 = this;
 
             var Formdata = {
+                degree: this.degree.toLowerCase(),
+                department: this.department.toLowerCase(),
+                year: Number(this.year),
+                semester: Number(this.semester),
+                section: this.section,
+
+                schedule_id: this.schedule_id,
                 date: this.date,
-                alternative_staff: this.alternative_staff,
-                schedule_id: this.Schedule_id
+                hour: this.hour,
+                is_sheduled_staff: this.is_sheduled_staff,
+                alternate_staff: this.alternate_staff
             };
-            fetch('/api/student/attendance/store', {
+            fetch('/api/student/attendance/dateandhour', {
                 method: "post",
                 body: JSON.stringify(Formdata),
                 headers: {
@@ -47994,21 +48028,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return response.json();
             }).then(function (data) {
                 console.log(data);
-
-                _this3.student_attendance_id = data.id;
 
                 _this3.showForm = false;
             }).catch(function (err) {});
         },
-        SetStatus: function SetStatus(student) {
+
+        // CREATE HOUR ATTENDANCE 
+        createStudentHour: function createStudentHour(student) {
+            var _this4 = this;
+
             var Formdata = {
+                degree: this.degree.toLowerCase(),
+                department: this.department.toLowerCase(),
+                year: Number(this.year),
+                semester: Number(this.semester),
+                section: this.section,
                 student_id: student.id,
-                schedule_id: this.Schedule_id,
+
                 date: this.date,
-                student_attendance_id: this.student_attendance_id,
-                status: this.Sstatus.toLowerCase()
+                hour: this.hour,
+                status: this.Sstatus
+
             };
-            fetch('/api/student/attendance/setstatus', {
+            fetch('/api/student/attendance/hour', {
                 method: "post",
                 body: JSON.stringify(Formdata),
                 headers: {
@@ -48018,10 +48060,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return response.json();
             }).then(function (data) {
                 console.log(data);
-                var st = data.status;
-            }).catch(function (err) {
-                // Do something for an error here
-            });
+
+                _this4.showForm = false;
+            }).catch(function (err) {});
         }
     },
 
@@ -48052,7 +48093,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var semester = vm.semester;
             var section = vm.section;
             var degree = vm.degree.toLowerCase();
-            var search = vm.searchFrm;
 
             if (department === '' && year === '' && section === '' && degree === '' && semester === '') {
                 return vm.Studs;
@@ -48087,7 +48127,7 @@ var render = function() {
                     on: {
                       submit: function($event) {
                         $event.preventDefault()
-                        _vm.createHour()
+                        _vm.createDateandHour()
                       }
                     }
                   },
@@ -48560,7 +48600,7 @@ var render = function() {
                                       : $$selectedVal[0]
                                   },
                                   function($event) {
-                                    _vm.SetStatus(student)
+                                    _vm.createStudentHour(student)
                                   }
                                 ]
                               }

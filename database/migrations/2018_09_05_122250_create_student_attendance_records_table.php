@@ -15,13 +15,16 @@ class CreateStudentAttendanceRecordsTable extends Migration
     {
         Schema::create('student_attendance_records', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('student_id');
-            $table->integer('schedule_id');
+            $table->string('degree');
+            $table->string('department');
+            $table->string('year');
+            $table->string('semester');
+            $table->string('section');
             $table->date('date');
-            $table->integer('student_attendance_id')->unsigned();
-            $table->foreign('student_attendance_id')->references('id')->on('student_attendances')->onDelete('cascade');
-            $table->boolean('present')->nullable();
-            $table->string('status');
+            $table->integer('hour');
+            $table->boolean('is_present');
+            $table->integer('status');
+            $table->date('semester_start');
             $table->timestamps();
         });
     }

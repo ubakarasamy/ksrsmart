@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentDateAttendancesTable extends Migration
+class AddStudentIdToRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class CreateStudentDateAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_date_attendances', function (Blueprint $table) {
-            $table->increments('id');
-            $table->date('date');
+        Schema::table('student_attendance_records', function($table){
             $table->integer('student_id');
-            $table->integer('total_hours')->default(0);
-            $table->date('semester_start');
-            $table->timestamps();
         });
     }
 
@@ -30,6 +25,8 @@ class CreateStudentDateAttendancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_date_attendances');
+        Schema::table('student_attendance_records', function($table){
+            $table->integer('student_id');
+        });
     }
 }

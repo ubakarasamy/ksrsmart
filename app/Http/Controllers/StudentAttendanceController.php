@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
-use App\StudentAttendance;
 use App\StudentSchedule;
-use App\StudentAttendanceRecord;
 use App\Student;
-use App\StudentAttendanceDate;
 use App\Academic;
-use App\StudentDateAttendance;
+
+use App\StudentAttendanceDate;
+use App\StudentAttendanceHour;
+use App\StudentAttendanceRecord;
 
 
 class StudentAttendanceController extends Controller
@@ -22,123 +22,120 @@ class StudentAttendanceController extends Controller
         return view('studentattendance.make');
     }
    
-    public function store(Request $request)
+    public function storeDateandHourFirst(Request $request)
     {
-        $ifExit = StudentAttendance::where([
-            ['schedule_id', '=', $request->schedule_id],
+        //CREATE DATE IN StudentAttendanceDate
+        $aca = Academic::find(1);
+
+        $IfDate1 = StudentAttendanceDate::where([
             ['date', '=', $request->date],
-            ])->first();   
+            ['degree', '=', $request->degree],
+            ['department', '=', $request->department],
+            ['year', '=', $request->year],
+            ['semester', '=', $request->semester],
+            ['section', '=', $request->section]
+        ])->first();
 
-            $aca = Academic::findOrFail(1);
-       
-
-        if($ifExit !== null){
-            return response()->json($ifExit);
+        if($IfDate1 === null){
+            $CreateDate = new StudentAttendanceDate;
+            $CreateDate->degree = $request->degree;
+            $CreateDate->department = $request->department;
+            $CreateDate->year = $request->year;
+            $CreateDate->semester = $request->semester;
+            $CreateDate->section = $request->section;
+            $CreateDate->date = $request->date;
+            $CreateDate->total_hours = 1;
+            $CreateDate->semester_start = $aca->semester_start;
+            $CreateDate->save();
         }else{
-            $attendance = new StudentAttendance;
-            $attendance->schedule_id = $request->schedule_id;
-            $attendance->date = $request->date;
-            $attendance->alternate_staff = $request->alternative_staff;
-            $attendance->edit_permission = true;
-            $attendance->save();
-            return response()->json($attendance);
+            return response()->json($IfDate1);
         }
-        //return response()->json($attendance);
-
-
-        $Datt1 = StudentAttendance::where([
+        // CREATE HOUR IN StudentAttendanceHour
+        $IfHour = StudentAttendanceHour::where([
             ['date', '=', $request->date],
-            ])->first();   
+            ['degree', '=', $request->degree],
+            ['department', '=', $request->department],
+            ['year', '=', $request->year],
+            ['semester', '=', $request->semester],
+            ['section', '=', $request->section],
+            ['hour', '=', $request->hour]
+        ])->first();
 
+        if($IfHour === null){
+            $CreateHour = new StudentAttendanceHour;
+            $CreateHour->degree = $request->degree;
+            $CreateHour->department = $request->department;
+            $CreateHour->year = $request->year;
+            $CreateHour->semester = $request->semester;
+            $CreateHour->section = $request->section;
+            $CreateHour->date = $request->date;
+            $CreateHour->hour = $request->hour;
+            $CreateHour->schedule_id = $request->schedule_id;
+            $CreateHour->is_sheduled_staff = $request->is_sheduled_staff;
+            $CreateHour->alternate_staff = $request->alternate_staff;
+            $CreateHour->semester_start = $aca->semester_start;
+            $CreateHour->save();
 
-    if($Datt1 === null){
-        $Datt2 = new StudentAttendanceDate;
-        $Datt2->date = $request->date;
-        $Datt2->total_hours = 0;
-        $Datt2->semester_start = $aca->semester_start;
-        $Datt2->save();
-    }
-
-       
-    }
-
-    public function setStatus(Request $request){
-
-        $ifExit = StudentAttendanceRecord::where([
-            ['student_id', '=', $request->student_id],
-            ['schedule_id', '=', $request->schedule_id],
-            ['date', '=', $request->date],
-            ['student_attendance_id', '=', $request->student_attendance_id]
-            ])->first();    
-
-            $DateAt = StudentAttendanceRecord::where([
-                ['student_id', '=', $request->student_id],
-                ['schedule_id', '=', $request->schedule_id],
+            $IfDate2 = StudentAttendanceDate::where([
                 ['date', '=', $request->date],
-                ['student_attendance_id', '=', $request->student_attendance_id]
-                ])->first();  
-
-                $aca = Academic::findOrFail(1);
-
-        $DateExit = StudentDateAttendance::where([['date', '=', $request->date]])->first();
-
-        if($DateExit === null){
-            $DateNw = new StudentDateAttendance;
-            $DateNw->date = $request->date;
-            $DateNw->student_id = $request->student_id;
-            $DateNw->total_hours = 1;
-            $DateNw->semester_start = $aca->semester_start;
-            $DateNw->save();
-        }else{
-            $dateATT = StudentDateAttendance::find($DateExit->id);
-
-            if(($ifExit->status === "absent" && $request->status !== "absent") || ($ifExit->status === "leave" && $request->status !== "leave")){
-               
-                $dateATT->total_hours = $DateNw->total_hours++;
-           
-        }else{
-            $dateATT->total_hours = $DateNw->total_hours--;
-        }
+                ['degree', '=', $request->degree],
+                ['department', '=', $request->department],
+                ['year', '=', $request->year],
+                ['semester', '=', $request->semester],
+                ['section', '=', $request->section]
+            ])->first();
             
-            $dateATT->save();
+            $IfDate2->total_hours = $IfDate2->total_hours + 1; // INCREATEMENT
+            $IfDate2->save();
+            
+
+            return response()->json('success');
+        }else{
+
+            $ExtHour = StudentAttendanceHour::find($IfHour->id);
+
+            return response()->json($ExtHour);
         }
 
+    }
 
-        if($ifExit !== null){
+    public function setStudentStatusEveryHour(Request $request){
 
-            $ifExit->student_id = $request->student_id;
-            $ifExit->schedule_id = $request->schedule_id;
-            $ifExit->date = $request->date;
-            $ifExit->student_attendance_id = $request->student_attendance_id;
+        $aca = Academic::find(1);
 
-            if(($ifExit->status === "absent" && $request->status !== "absent") || ($ifExit->status === "leave" && $request->status !== "leave")){
-               
-                    $ifExit->present = true;
-               
+        $IfHour = StudentAttendanceRecord::where([
+            ['date', '=', $request->date],
+            ['degree', '=', $request->degree],
+            ['department', '=', $request->department],
+            ['year', '=', $request->year],
+            ['semester', '=', $request->semester],
+            ['section', '=', $request->section],
+            ['hour', '=', $request->hour]
+        ])->first();
+
+        if($IfHour === null){
+            $CreateHour = new StudentAttendanceRecord;
+            $CreateHour->degree = $request->degree;
+            $CreateHour->department = $request->department;
+            $CreateHour->year = $request->year;
+            $CreateHour->semester = $request->semester;
+            $CreateHour->section = $request->section;
+
+            $CreateHour->student_id = $request->student_id;
+            $CreateHour->date = $request->date;
+            $CreateHour->hour = $request->hour;
+
+            if(($CreateHour->status === "absent" && $request->status !== "absent") || ($CreateHour->status === "leave" && $request->status !== "leave")){
+                $CreateHour->is_present = true;
             }else{
-                $ifExit->present = false;
-            }
-            
-            $ifExit->status = $request->status;
-            $ifExit->save();
-            return response()->json('exists');
-        }else{
-            $ifExit = new StudentAttendanceRecord;
-            $ifExit->student_id = $request->student_id;
-            $ifExit->schedule_id = $request->schedule_id;
-            $ifExit->date = $request->date;
-            $ifExit->student_attendance_id = $request->student_attendance_id;
-            $ifExit->status = $request->status;
-
-            if($request->status !== "absent" || $request->status === "leave"){
-                $ifExit->present = true;
-            }else{
-                $ifExit->present = false;
+                $CreateHour->is_present = false;
             }
 
-            $ifExit->save();
-            return response()->json($request);
+            $CreateHour->status = $request->status;
+            $CreateHour->semester_start = $aca->semester_start;
+            $CreateHour->save();
         }
+        
         
     }
 
@@ -156,56 +153,7 @@ class StudentAttendanceController extends Controller
 
     public function ViewJsonByDate(Request $request){
 
-        $fromdate = $request->fromdate;
-        $todate = $request->todate;
-        $degree = $request->degree;
-        $department = $request->department;
-        $year = $request->year;
-        $semester = $request->semester;
-        $section = $request->section;  
         
-        // IMPORTANT
-
-        $AllStudents = Student::where([
-                ['degree', '=', $degree],
-                    ['department', '=', $department],
-                    ['year', '=', $year],
-                    ['semester', '=', $semester],
-                    ['section', '=', $section]
-            ])->get();
-        $attendanceDates = StudentAttendanceDate::where([
-            ['date', '>=', $fromdate],
-            ['date', '<=', $todate],
-        ])->get();
-
-        $attendanceHours = StudentAttendance::where([
-            ['date', '>=', $fromdate],
-            ['date', '<=', $todate],
-        ])->get(); //all working hours
-
-        $Schedules = StudentSchedule::where([
-            ['degree', '=', $degree],
-            ['department', '=', $department],
-            ['year', '=', $year],
-            ['semester', '=', $semester],
-            ['section', '=', $section]
-        ])->first();
-
-        $Records = StudentAttendanceRecord::where([
-                    ['date', '>=', $fromdate],
-                    ['date', '<=', $todate]
-                ])->get();
-
-       
-
-        $Res = ['Atdates' => $attendanceDates, 'Atdatas' => $Records];
-
-        
-
-return response()->json($Res);
-       
-
-        //return response()->json(['working_hours'=>$AWHs,'atdatas'=>$AStHrs]);
     }
 
 

@@ -3,7 +3,7 @@
 
 @section('content')
 <div id="app">
-<student-attendance-create></student-attendance-create>
+<student-attendance-create :authenticateduser="{{ Auth::user() }}" ></student-attendance-create>
 </div>
 
 

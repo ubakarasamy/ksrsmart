@@ -15,6 +15,11 @@ class CreateStudentAttendanceDatesTable extends Migration
     {
         Schema::create('student_attendance_dates', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('degree');
+            $table->string('department');
+            $table->string('year');
+            $table->string('semester');
+            $table->string('section');
             $table->date('date');
             $table->integer('total_hours');
             $table->date('semester_start');

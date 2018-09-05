@@ -9,7 +9,7 @@
 	<div class="panel-body">
 		<div class="row">
             <div class="form-create" v-if="showForm">
-            <form @submit.prevent="createHour()">
+            <form @submit.prevent="createDateandHour()">
             <div class="col-sm-2">
                 <label for="degree" class="">Degree</label>
             <select required="true" v-model="degree" class="form-control" id="degree" name="degree">
@@ -96,11 +96,11 @@
                         <th>Name</th>
                     </thead>
                     <tbody>
-                        <tr v-for="student in filteredStudents">
+<tr v-for="student in filteredStudents">
                             <td>{{student.reg_no}}</td>
                             <td>{{student.name}}</td>
                             <td>
-                                 <select class="form-control" id="atstatus" @change="SetStatus(student)" v-model="Sstatus"> 
+                                 <select class="form-control" id="atstatus" @change="createStudentHour(student)" v-model="Sstatus"> 
   <option value="default" disabled selected>select</option>
   <option  v-for="atStatus in atStatuses" v-bind:key="atStatus.value">
     {{ atStatus.text }}
@@ -123,13 +123,15 @@
 export default {
     data(){
         return {
+            
             Studs:[],
             showForm:true,
             Schedules:[],
-            hour:'',
-            Schedule_id:'',
+            schedule_id:'',
             date:'',
             student_attendance_id:'',
+            is_sheduled_staff:'',
+            alternate_staff:'',
             
             Sstatus:'default',
             atStatuses:[
@@ -138,7 +140,7 @@ export default {
                 {text:'Leave', value:'leave'},
                 {text:'OD', value:'od'}
             ],
-            alternative_staff:'null',
+            hour:'',
             hour_options:[
                 {text:'1',vale:'1'},
                 {text:'2',vale:'2'},
@@ -201,8 +203,9 @@ export default {
         this.getAllShedules();
         this.getAllStudents();
     },
+     props:['authenticateduser'],
     methods:{
-
+// GET ALL STUDENTS
         getAllStudents(){
             fetch('/api/students')
             .then(res => {
@@ -212,7 +215,8 @@ export default {
                 this.Studs = data;
             }).catch(err => console.log(err));
         },
-        
+
+// DISPLAY SUBJECT IN FRONT
         displaySubject(){
         let degree = this.degree.toLowerCase();
         let department = this.department.toLowerCase();
@@ -221,15 +225,25 @@ export default {
         let section = this.section;
         let day = this.day.toLowerCase();
         let hour = this.hour;
-
             if(degree !== "" && department !== "" && year !== "" && semester !== "" && section !== "" && day !== "" && hour !== ""){
-                this.Schedule_id = this.filterSchedules[0].id;
+                this.schedule_id = this.filterSchedules[0].id;
+console.log(this.authenticateduser.id);
+console.log(this.filterSchedules[0].staff_id);
+
+                if(this.authenticateduser.id !== this.filterSchedules[0].staff_id){
+                    this.is_sheduled_staff = false;
+                    this.alternate_staff = this.authenticateduser.id;
+                }else{
+                    this.is_sheduled_staff = true;
+                    this.alternate_staff = null;
+                }
+
                 return `${this.filterSchedules[0].subject_name}`;
             }else{
                 return '__';
             }
         },
-
+// GET ALL SCHEDULES
         getAllShedules(){
             fetch('/api/schedule/show')
             .then(res => { return res.json(); })
@@ -239,13 +253,22 @@ export default {
                 }).catch(err => console.log(err));
         },
 
-        createHour(){
+// CREATE DATE AND HOUR FOR GETTING OVERALL
+        createDateandHour(){
             let Formdata = {
-                    date:this.date,
-                    alternative_staff:this.alternative_staff,
-                    schedule_id:this.Schedule_id,
+                    degree : this.degree.toLowerCase(),
+                    department : this.department.toLowerCase(),
+                    year : Number(this.year),
+                    semester : Number(this.semester),
+                    section : this.section,
+
+                    schedule_id:this.schedule_id,
+                    date : this.date,
+                    hour : this.hour,
+                    is_sheduled_staff : this.is_sheduled_staff,
+                    alternate_staff : this.alternate_staff
                 }
-                fetch('/api/student/attendance/store', {
+                fetch('/api/student/attendance/dateandhour', {
                     method: "post",
                     body: JSON.stringify(Formdata),
                     headers:{
@@ -256,7 +279,6 @@ export default {
                 }).then(data => {
                     console.log(data);
 
-                    this.student_attendance_id = data.id;
                     
                         this.showForm = false;
                     
@@ -264,15 +286,22 @@ export default {
                     
                 });
         },
-        SetStatus(student){
+// CREATE HOUR ATTENDANCE 
+        createStudentHour(student){
             let Formdata = {
+                    degree : this.degree.toLowerCase(),
+                    department : this.department.toLowerCase(),
+                    year : Number(this.year),
+                    semester : Number(this.semester),
+                    section : this.section,
                     student_id:student.id,
-                    schedule_id:this.Schedule_id,
-                    date:this.date,
-                    student_attendance_id:this.student_attendance_id,
-                    status:this.Sstatus.toLowerCase()
+
+                    date : this.date,
+                    hour : this.hour,
+                    status : this.Sstatus
+                    
                 }
-                fetch('/api/student/attendance/setstatus', {
+                fetch('/api/student/attendance/hour', {
                     method: "post",
                     body: JSON.stringify(Formdata),
                     headers:{
@@ -282,12 +311,21 @@ export default {
                     return response.json();
                 }).then(data => {
                     console.log(data);
-                    const st = data.status;
+
+                    
+                        this.showForm = false;
                     
                 }).catch(err => {
-                    // Do something for an error here
+                    
                 });
-        }
+        },
+
+
+
+
+
+        
+        
     },
 
     computed:{
@@ -327,7 +365,6 @@ export default {
         let semester = vm.semester;
         let section = vm.section;
         let degree = vm.degree.toLowerCase();
-        let search = vm.searchFrm;
         
         if(department === '' && year === '' && section === '' && degree === '' && semester === ''){
           return vm.Studs;
