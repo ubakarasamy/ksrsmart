@@ -9,7 +9,7 @@
 	<div class="panel-body">
         <div class="row">
         <form>
-		<div class="row">
+		<!-- <div class="row">
                <div class="col-sm-2">
                 <label for="degree" class="">Degree</label>
             <select required="true" v-model="degree" class="form-control" id="degree" name="degree">
@@ -58,7 +58,7 @@
                 <label for="date">Date </label>
                 <input required="true" type="date" id="date" v-model="date" name="date" max="3000-12-31" min="1000-01-01" class="form-control">
             </div>
-        </div>
+        </div> -->
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 	</div>

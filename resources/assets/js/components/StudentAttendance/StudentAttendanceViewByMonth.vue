@@ -72,8 +72,17 @@
                 <thead>
                     <th>Student REG No</th>
                     <th>Name</th>
-                    <th v-for=""></th>
+                    <!-- <th v-for=""></th> -->
                 </thead>
+                <tbody>
+                    <tr v-for="Student in filteredStudents" v-bind:key="Student.id">
+                        <td>{{Student.reg_no}}</td>
+                        <td>{{Student.name}}</td>
+                        <td v-for="AtDate in AtDatas" v-bind:key="AtDate.id">
+                            {{getAttendance(Student,AtDate)}}
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -90,8 +99,8 @@ export default {
 
             Studs:[],
 
-            Whrs:[],
-            Adts:[],
+            AtDatas:[],
+            AtDates:[],
             hideForm:true,
             fromdate:'',
             todate:'',
@@ -136,7 +145,28 @@ export default {
                 ]
         }
     },
+    mounted(){
+        this.getAllStudents();
+    },
     methods:{
+
+        getAttendance(Student,AtDate){
+            var status;
+            var aData;
+            var child;
+      aData = this.AtDatas;
+      for (var child in aData) {
+        if (aData[child].student_id === Student.id && aData[child].date === AtDate.date) {
+          status = aData[child].present;
+        }
+      }
+      if (status) {
+        return status;
+      } else {
+        return null;
+      }
+            
+        },
 
         getAllStudents(){
             fetch('/api/students')
@@ -158,6 +188,7 @@ export default {
                     semester:this.semester,
                     section:this.section
                 }
+                
                 fetch('/api/student/attendance/view/bydate', {
                     method: "post",
                     body: JSON.stringify(Formdata),
@@ -171,8 +202,8 @@ export default {
                     this.hideForm = false;
                     console.log(data);
 
-                   this.Whrs = data['working_hours'];
-                   this.Adts = data['atdatas'];
+                   this.AtDatas = data['Atdatas'];
+                   this.AtDates = data['Atdates'];
                     
                 }).catch(err => {
                     

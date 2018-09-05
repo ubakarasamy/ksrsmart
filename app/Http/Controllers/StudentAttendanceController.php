@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Response;
 use App\StudentAttendance;
 use App\StudentSchedule;
 use App\StudentAttendanceRecord;
+use App\Student;
+use App\StudentAttendanceDate;
+use App\Academic;
+use App\StudentDateAttendance;
 
 
 class StudentAttendanceController extends Controller
@@ -23,7 +27,10 @@ class StudentAttendanceController extends Controller
         $ifExit = StudentAttendance::where([
             ['schedule_id', '=', $request->schedule_id],
             ['date', '=', $request->date],
-            ])->first();    
+            ])->first();   
+
+            $aca = Academic::findOrFail(1);
+       
 
         if($ifExit !== null){
             return response()->json($ifExit);
@@ -37,6 +44,21 @@ class StudentAttendanceController extends Controller
             return response()->json($attendance);
         }
         //return response()->json($attendance);
+
+
+        $Datt1 = StudentAttendance::where([
+            ['date', '=', $request->date],
+            ])->first();   
+
+
+    if($Datt1 === null){
+        $Datt2 = new StudentAttendanceDate;
+        $Datt2->date = $request->date;
+        $Datt2->total_hours = 0;
+        $Datt2->semester_start = $aca->semester_start;
+        $Datt2->save();
+    }
+
        
     }
 
@@ -48,6 +70,40 @@ class StudentAttendanceController extends Controller
             ['date', '=', $request->date],
             ['student_attendance_id', '=', $request->student_attendance_id]
             ])->first();    
+
+            $DateAt = StudentAttendanceRecord::where([
+                ['student_id', '=', $request->student_id],
+                ['schedule_id', '=', $request->schedule_id],
+                ['date', '=', $request->date],
+                ['student_attendance_id', '=', $request->student_attendance_id]
+                ])->first();  
+
+                $aca = Academic::findOrFail(1);
+
+        $DateExit = StudentDateAttendance::where([['date', '=', $request->date]])->first();
+
+        if($DateExit === null){
+            $DateNw = new StudentDateAttendance;
+            $DateNw->date = $request->date;
+            $DateNw->student_id = $request->student_id;
+            $DateNw->total_hours = 1;
+            $DateNw->semester_start = $aca->semester_start;
+            $DateNw->save();
+        }else{
+            $dateATT = StudentDateAttendance::find($DateExit->id);
+
+            if(($ifExit->status === "absent" && $request->status !== "absent") || ($ifExit->status === "leave" && $request->status !== "leave")){
+               
+                $dateATT->total_hours = $DateNw->total_hours++;
+           
+        }else{
+            $dateATT->total_hours = $DateNw->total_hours--;
+        }
+            
+            $dateATT->save();
+        }
+
+
         if($ifExit !== null){
 
             $ifExit->student_id = $request->student_id;
@@ -109,50 +165,47 @@ class StudentAttendanceController extends Controller
         $section = $request->section;  
         
         // IMPORTANT
-        $attendanceHours = StudentAttendance::where([
+
+        $AllStudents = Student::where([
+                ['degree', '=', $degree],
+                    ['department', '=', $department],
+                    ['year', '=', $year],
+                    ['semester', '=', $semester],
+                    ['section', '=', $section]
+            ])->get();
+        $attendanceDates = StudentAttendanceDate::where([
             ['date', '>=', $fromdate],
             ['date', '<=', $todate],
         ])->get();
 
-        $attendanceHours; //all working Hours
+        $attendanceHours = StudentAttendance::where([
+            ['date', '>=', $fromdate],
+            ['date', '<=', $todate],
+        ])->get(); //all working hours
 
-        $AWHs = [];
+        $Schedules = StudentSchedule::where([
+            ['degree', '=', $degree],
+            ['department', '=', $department],
+            ['year', '=', $year],
+            ['semester', '=', $semester],
+            ['section', '=', $section]
+        ])->first();
 
-        $AStHrs = [];
+        $Records = StudentAttendanceRecord::where([
+                    ['date', '>=', $fromdate],
+                    ['date', '<=', $todate]
+                ])->get();
 
-        foreach ($attendanceHours as $attendanceHour) {
-            $hour = StudentSchedule::where([
-                ['id', '=', $attendanceHour->schedule_id],
-                ['degree', '=', $degree],
-                ['department', '=', $department],
-                ['year', '=', $year],
-                ['semester', '=', $semester],
-                ['section', '=', $section]
-            ])->first();
+       
 
-            array_push($AWHs, $hour); //all working hours for class
-
-            $attt = StudentAttendanceRecord::where([
-                ['schedule_id', '=', $hour->id],
-                ['date', '>=', $fromdate],
-                ['date', '<=', $todate]
-            ])->get();
-            
-            
-            array_push($AStHrs, $attt); //all present datas for class
-
-        }
+        $Res = ['Atdates' => $attendanceDates, 'Atdatas' => $Records];
 
         
 
-
+return response()->json($Res);
        
 
-
-
-       
-
-        return response()->json(['working_hours'=>$AWHs,'atdatas'=>$AStHrs]);
+        //return response()->json(['working_hours'=>$AWHs,'atdatas'=>$AStHrs]);
     }
 
 
