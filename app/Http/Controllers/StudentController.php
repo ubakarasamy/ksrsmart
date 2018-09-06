@@ -140,17 +140,17 @@ class StudentController extends Controller
     public function test()
     {
  
-//         $comments = StudentSubject::find(1)->studentschedule;
+        $comments = StudentSubject::find(8)->studentschedule;
 
-// foreach ($comments as $comment) {
-//     print_r($comment->day);
-//     print_r($comment->hour);
-// }
-//     }
+foreach ($comments as $comment) {
+    print_r($comment->day);
+    print_r($comment->hour);
+}
+    
 
-            $sub = StudentSchedule::find(3)->studentsubject;
+            $sub = StudentSchedule::find(22)->studentsubject;
 
-            return $sub;
+            return $sub->subject_id;
 }
 
 }

@@ -17,6 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('test', 'StudentController@test');
+
+
 Route::get('students', 'StudentController@showAll');
 Route::post('student/store', 'StudentController@store');
 Route::put('student/update', 'StudentController@update');
@@ -34,5 +37,10 @@ Route::post('student/attendance/dateandhour', 'StudentAttendanceController@store
 
 Route::post('student/attendance/hour', 'StudentAttendanceController@setStudentStatusEveryHour');
 
+Route::post('student/attendance/view/bydate', 'StudentAttendanceController@StudentStatusByDate');
 
+
+Route::post('student/attendance/view/byday', 'StudentAttendanceController@StudentStatusDay');
+
+Route::post('student/attendance/view/byoverall', 'StudentAttendanceController@StudentStatusOverall');
 

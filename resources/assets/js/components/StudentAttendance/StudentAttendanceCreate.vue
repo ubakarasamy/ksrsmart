@@ -100,9 +100,8 @@
                             <td>{{student.reg_no}}</td>
                             <td>{{student.name}}</td>
                             <td>
-                                 <select class="form-control" id="atstatus" @change="createStudentHour(student)" v-model="Sstatus"> 
-  <option value="default" disabled selected>select</option>
-  <option  v-for="atStatus in atStatuses" v-bind:key="atStatus.value">
+                                 <select class="form-control" id="atstatus" @change="createStudentHour(student)" v-model="create.Sstatus"> 
+  <option  v-for="atStatus in atStatuses">
     {{ atStatus.text }}
   </option>
 </select>
@@ -133,8 +132,9 @@ export default {
             is_sheduled_staff:'',
             alternate_staff:'',
             
-            Sstatus:'default',
+            create:[{Sstatus:'default'}],
             atStatuses:[
+                {text:'Select', value:'null', disabled:'true'},
                 {text:'Present', value:'present'},
                 {text:'Absent', value:'absent'},
                 {text:'Leave', value:'leave'},
@@ -280,7 +280,7 @@ console.log(this.filterSchedules[0].staff_id);
                     console.log(data);
 
                     
-                        this.showForm = false;
+                        //this.showForm = false;
                     
                 }).catch(err => {
                     
@@ -298,7 +298,7 @@ console.log(this.filterSchedules[0].staff_id);
 
                     date : this.date,
                     hour : this.hour,
-                    status : this.Sstatus
+                    status : this.create.Sstatus.toLowerCase()
                     
                 }
                 fetch('/api/student/attendance/hour', {

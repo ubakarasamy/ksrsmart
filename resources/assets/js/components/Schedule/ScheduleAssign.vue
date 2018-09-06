@@ -316,7 +316,7 @@ export default {
                 var sche;
                 var Schedules;
      
-                Schedules = this.Schedules;
+                Schedules = this.filterSchedules;
 
                 for(var child in Schedules){
                     if (Schedules[child].day === day && Schedules[child].hour === hour){

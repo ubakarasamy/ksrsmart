@@ -72,14 +72,16 @@
                 <thead>
                     <th>Student REG No</th>
                     <th>Name</th>
-                    <!-- <th v-for=""></th> -->
+                    <th v-for="AtDate in AtDates" v-bind:key="AtDate.id">
+                        {{AtDate.date}}
+                    </th>
                 </thead>
                 <tbody>
                     <tr v-for="Student in filteredStudents" v-bind:key="Student.id">
                         <td>{{Student.reg_no}}</td>
                         <td>{{Student.name}}</td>
-                        <td v-for="AtDate in AtDatas" v-bind:key="AtDate.id">
-                            {{getAttendance(Student,AtDate)}}
+                        <td v-for="AtDate in AtDates" v-bind:key="AtDate.id">
+                            {{getAttendance(Student,AtDate)}} / {{AtDate.total_hours}}
                         </td>
                     </tr>
                 </tbody>
@@ -99,7 +101,7 @@ export default {
 
             Studs:[],
 
-            AtDatas:[],
+            AtRecords:[],
             AtDates:[],
             hideForm:true,
             fromdate:'',
@@ -151,17 +153,17 @@ export default {
     methods:{
 
         getAttendance(Student,AtDate){
-            var status;
+            var status = [];
             var aData;
             var child;
-      aData = this.AtDatas;
+      aData = this.AtRecords;
       for (var child in aData) {
-        if (aData[child].student_id === Student.id && aData[child].date === AtDate.date) {
-          status = aData[child].present;
+        if (aData[child].student_id === Student.id && aData[child].date === AtDate.date && aData[child].is_present === 1) {
+          status.push(aData[child]);
         }
       }
       if (status) {
-        return status;
+        return status.length;
       } else {
         return null;
       }
@@ -202,8 +204,8 @@ export default {
                     this.hideForm = false;
                     console.log(data);
 
-                   this.AtDatas = data['Atdatas'];
-                   this.AtDates = data['Atdates'];
+                   this.AtDates = data['dates'];
+                   this.AtRecords = data['records'];
                     
                 }).catch(err => {
                     

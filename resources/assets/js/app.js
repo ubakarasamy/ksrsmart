@@ -14,6 +14,8 @@ window.Vue = require('vue');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.component('home-page', require('./components/Home/Homepage.vue'));
+
 Vue.component('student-index', require('./components/Student/Student.vue'));
 Vue.component('student-create', require('./components/Student/StudentCreate.vue'));
 
