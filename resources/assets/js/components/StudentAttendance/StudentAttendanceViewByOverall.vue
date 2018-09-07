@@ -8,6 +8,7 @@
 	</div>
 	<div class="panel-body">
         <div class="row" v-if="hideForm">
+            <a class="btn btn-primary back-btn" href="">Back</a>
         <form @submit.prevent="getAttendances()">
 		<div class="row">
                <div class="col-sm-2">
@@ -131,8 +132,8 @@ export default {
                 section:'',
                 section_options:[
                     {text:'a', value:'a'},
-                    {text:'b', vblue:'a'},
-                    {text:'c', vclue:'c'}
+                    {text:'b', value:'a'},
+                    {text:'c', value:'c'}
                 ]
         }
     },
@@ -164,6 +165,7 @@ export default {
 
  this.AtHours;
  var status = [];
+ var stat;
             var aData;
             var child;
             let Fletters;
@@ -174,13 +176,12 @@ export default {
         }
       }
       if (status) { 
-         
-          return (status.length / this.AtHours.length) * 100;
+          stat = (status.length / this.AtHours.length) * 100;
+          return Math.round(stat);
       } else {
         return "null";
       }
-          
-        },
+    },
 
         getAttendance(Student,AtHour){
             var status = [];

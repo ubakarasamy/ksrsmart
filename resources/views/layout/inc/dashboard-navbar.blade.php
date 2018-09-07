@@ -69,6 +69,11 @@
 							><i class="lnr lnr-home"></i> <span>Dashboard</span></a>
 						</li>
 						<li>
+							<a href="{{route('staffs')}}" 
+							class=" @if($route = Route::current()->getName() == 'staffs') <?php echo "active" ?> @endif"
+							><i class="lnr lnr-code"></i> <span>Staffs</span></a>
+						</li>
+						<li>
 							<a href="{{route('students')}}" 
 							class=" @if($route = Route::current()->getName() == 'students') <?php echo "active" ?> @endif"
 							><i class="lnr lnr-code"></i> <span>Students</span></a>
@@ -93,6 +98,7 @@
 													<li><a href="{{route('student-attendance-view-day')}}" class="">Day</a></li>
 													<li><a href="{{route('student-attendance-view-month')}}" class="">Month</a></li>
 													<li><a href="{{route('student-attendance-view-overall')}}" class="">Overall</a></li>
+													<li><a href="{{route('student-attendance-view-subject')}}" class="">Subject</a></li>
 												</ul>
 											</div>
 										</li>

@@ -90,25 +90,35 @@
             </form>	
             </div>	
             <div class="create-attendance" v-if="showForm === false">
+
+<a class="btn btn-primary back-btn" href="">Back</a>
+
+                <button @click="createAllStudentHour()" class="btn btn-primary">All present</button>
+
                 <table class="table">
                     <thead>
                         <th>Student ID</th>
                         <th>Name</th>
+                        <th>Status</th>
+                        <th>Change Status</th>
                     </thead>
                     <tbody>
-<tr v-for="student in filteredStudents">
+<tr v-for="student in filteredStudents" v-bind:key="student.id">
                             <td>{{student.reg_no}}</td>
                             <td>{{student.name}}</td>
+                            <td>{{getStudentStatus(student)}}</td>
                             <td>
-                                 <select class="form-control" id="atstatus" @change="createStudentHour(student)" v-model="create.Sstatus"> 
-  <option  v-for="atStatus in atStatuses">
+<select class="form-control" @change="createStudentHour(student)" v-model="Sstatus"> 
+  <option  v-for="atStatus in atStatuses" >
     {{ atStatus.text }}
   </option>
 </select>
+<span></span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+
             </div>
 		</div>
 	</div>
@@ -131,10 +141,11 @@ export default {
             student_attendance_id:'',
             is_sheduled_staff:'',
             alternate_staff:'',
+
+            Attendances:[],
             
-            create:[{Sstatus:'default'}],
+            Sstatus:'',
             atStatuses:[
-                {text:'Select', value:'null', disabled:'true'},
                 {text:'Present', value:'present'},
                 {text:'Absent', value:'absent'},
                 {text:'Leave', value:'leave'},
@@ -142,21 +153,21 @@ export default {
             ],
             hour:'',
             hour_options:[
-                {text:'1',vale:'1'},
-                {text:'2',vale:'2'},
-                {text:'3',vale:'3'},
-                {text:'4',vale:'4'},
-                {text:'5',vale:'5'},
-                {text:'6',vale:'6'},
-                {text:'7',vale:'7'}
+                {text:'1',value:'1'},
+                {text:'2',value:'2'},
+                {text:'3',value:'3'},
+                {text:'4',value:'4'},
+                {text:'5',value:'5'},
+                {text:'6',value:'6'},
+                {text:'7',value:'7'}
             ],
             day:'',
             day_options:[
-                {text:'Mon',vale:'mon'},
-                {text:'Tue',vale:'tue'},
-                {text:'Wed',vale:'wed'},
-                {text:'Thu',vale:'thu'},
-                {text:'Fri',vale:'fri'}
+                {text:'Mon',value:'mon'},
+                {text:'Tue',value:'tue'},
+                {text:'Wed',value:'wed'},
+                {text:'Thu',value:'thu'},
+                {text:'Fri',value:'fri'}
             ],
             degree:'',
                 degree_options:[
@@ -194,8 +205,8 @@ export default {
                 section:'',
                 section_options:[
                     {text:'a', value:'a'},
-                    {text:'b', vblue:'a'},
-                    {text:'c', vclue:'c'}
+                    {text:'b', value:'b'},
+                    {text:'c', value:'c'}
                 ]
         }
     },
@@ -205,6 +216,25 @@ export default {
     },
      props:['authenticateduser'],
     methods:{
+
+getStudentStatus(student) {
+      var status;
+      var aData;
+      var child;
+      aData = this.Attendances;
+      for (var child in aData) {
+        if (aData[child].student_id === student.id) {
+          status = aData[child].status;
+        }
+      }
+      if (status) {
+        return status;
+      } else {
+        return null;
+      }
+    },
+
+
 // GET ALL STUDENTS
         getAllStudents(){
             fetch('/api/students')
@@ -278,9 +308,8 @@ console.log(this.filterSchedules[0].staff_id);
                     return response.json();
                 }).then(data => {
                     console.log(data);
-
-                    
-                        //this.showForm = false;
+this.Attendances = data;
+                        this.showForm = false;
                     
                 }).catch(err => {
                     
@@ -295,10 +324,11 @@ console.log(this.filterSchedules[0].staff_id);
                     semester : Number(this.semester),
                     section : this.section,
                     student_id:student.id,
-
+                    
+                    schedule_id:this.schedule_id,
                     date : this.date,
                     hour : this.hour,
-                    status : this.create.Sstatus.toLowerCase()
+                    status : this.Sstatus.toLowerCase()
                     
                 }
                 fetch('/api/student/attendance/hour', {
@@ -312,13 +342,49 @@ console.log(this.filterSchedules[0].staff_id);
                 }).then(data => {
                     console.log(data);
 
+                    this.Sstatus='';
                     
-                        this.showForm = false;
+                    this.Attendances = data;
                     
                 }).catch(err => {
                     
                 });
         },
+         createAllStudentHour(){
+            let Formdata = {
+                    degree : this.degree.toLowerCase(),
+                    department : this.department.toLowerCase(),
+                    year : Number(this.year),
+                    semester : Number(this.semester),
+                    section : this.section,
+                    students:this.filteredStudents,
+                    
+                    schedule_id:this.schedule_id,
+                    date : this.date,
+                    hour : this.hour,
+                    status : 'present'
+                    
+                }
+                fetch('/api/student/attendance/hour/all', {
+                    method: "post",
+                    body: JSON.stringify(Formdata),
+                    headers:{
+                        "content-type":"application/json"
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    console.log(data);
+
+                    this.getAllStudents();
+                        this.Attendances = data;
+                    
+                }).catch(err => {
+                    
+                });
+        },
+
+
 
 
 

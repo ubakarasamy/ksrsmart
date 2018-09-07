@@ -19,6 +19,9 @@ Vue.component('home-page', require('./components/Home/Homepage.vue'));
 Vue.component('student-index', require('./components/Student/Student.vue'));
 Vue.component('student-create', require('./components/Student/StudentCreate.vue'));
 
+Vue.component('staff-index', require('./components/Staff/Staff.vue'));
+Vue.component('staff-create', require('./components/Staff/StaffCreate.vue'));
+
 Vue.component('schedule-index', require('./components/Schedule/Schedule.vue'));
 Vue.component('schedule-assign', require('./components/Schedule/ScheduleAssign.vue'));
 Vue.component('schedule-view', require('./components/Schedule/ScheduleView.vue'));
@@ -28,6 +31,9 @@ Vue.component('student-attendance-create', require('./components/StudentAttendan
 Vue.component('student-attendance-viewbyday', require('./components/StudentAttendance/StudentAttendanceViewByDay.vue'));
 Vue.component('student-attendance-viewbymonth', require('./components/StudentAttendance/StudentAttendanceViewByMonth.vue'));
 Vue.component('student-attendance-viewbyoverall', require('./components/StudentAttendance/StudentAttendanceViewByOverall.vue'));
+Vue.component('student-attendance-viewsubject', require('./components/StudentAttendance/StudentAttendanceViewBySubject.vue'));
+
+
 
 const app = new Vue({
     el: '#app'

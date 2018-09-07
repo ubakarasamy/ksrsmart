@@ -1,15 +1,14 @@
 <template>
 <div class="home">
 
-    <!-- OVERVIEW -->
+<!-- OVERVIEW -->
 <div class="panel panel-headline">
 	<div class="panel-heading">
-		<h3 class="panel-title">Student Attendance View By Month</h3>
-
+		<h3 class="panel-title">Student Attendance View By Subject </h3>
 	</div>
 	<div class="panel-body">
         <div class="row" v-if="hideForm">
-            <a class="btn btn-primary back-btn" href="">Back</a>
+            
         <form @submit.prevent="getAttendances()">
 		<div class="row">
                <div class="col-sm-2">
@@ -56,35 +55,36 @@
 			</select>
             <br>
             </div>
-            <div class="col-sm-2">
-                <label for="fromdate">From date</label>
-                <input required="true" type="date" id="fromdate" v-model="fromdate" name="fromdate" max="3000-12-31" min="1000-01-01" class="form-control">
+
+            <div class="form-group col-sm-2"> 
+                <label for="Subject">Subject</label>
+                <select class="form-control" name="Subject" id="Subject" @change="getSubjectId()" v-model="Subject_selected">
+                    <option v-for="Subject in filterSubjects">{{Subject.subject_name}}</option>
+                </select><br>
             </div>
-            <div class="col-sm-2">
-                <label for="todate">To date</label>
-                <input required="true" type="date" id="todate" v-model="todate" name="todate" max="3000-12-31" min="1000-01-01" class="form-control">
-            </div>
+
         </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 	</div>
     <div class="row" v-if="hideForm === false">
+        <div class="back-btn-div">
+                <a class="btn btn-primary back-btn" href="">Back</a>
+            </div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <th>Student REG No</th>
                     <th>Name</th>
-                    <th v-for="AtDate in AtDates" v-bind:key="AtDate.id">
-                        {{AtDate.date}}
-                    </th>
+                    <th>Hours</th>
+                    <th>Percentage</th>
                 </thead>
                 <tbody>
                     <tr v-for="Student in filteredStudents" v-bind:key="Student.id">
                         <td>{{Student.reg_no}}</td>
                         <td>{{Student.name}}</td>
-                        <td v-for="AtDate in AtDates" v-bind:key="AtDate.id">
-                            {{getAttendance(Student,AtDate)}} / {{AtDate.total_hours}}
-                        </td>
+                        <td>{{getStudSubOverall(Student)}} / {{Totalhours()}}</td>
+                        <td>{{attendancePercentage(Student)}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -94,20 +94,19 @@
 </div>
 </div>
 </template>
-
-
 <script>
 export default {
     data(){
         return{
-
             Studs:[],
-
+            subject_id:'',
+            Subject_selected:'',
+            Subjects:[],
+            Schedules:[],
             AtRecords:[],
-            AtDates:[],
+            AtHours:[],
             hideForm:true,
-            fromdate:'',
-            todate:'',
+            date:'',
             degree:'',
                 degree_options:[
                     {text:'BE', value:'be'},
@@ -151,27 +150,59 @@ export default {
     },
     mounted(){
         this.getAllStudents();
+        this.getAllSubjects();
     },
     methods:{
+        Totalhours(){
+            return this.AtHours.length;
+        },
+        attendancePercentage(Student){
 
-        getAttendance(Student,AtDate){
-            var status = [];
+ this.AtHours;
+ var status = [];
+ var stat;
             var aData;
             var child;
+            let Fletters;
       aData = this.AtRecords;
       for (var child in aData) {
-        if (aData[child].student_id === Student.id && aData[child].date === AtDate.date && aData[child].is_present === 1) {
+        if (aData[child].student_id === Student.id) {
           status.push(aData[child]);
         }
       }
-      if (status) {
-        return status.length;
+      if (status) { 
+          stat = (status.length / this.AtHours.length) * 100;
+          return Math.round(stat);
       } else {
-        return null;
+        return "null";
       }
-            
+    },
+
+
+        getSubjectId(){
+            var subb;
+            var staff;
+                var Subs;
+     
+                Subs = this.filterSubjects;
+                for(var child in Subs){
+                    if (Subs[child].subject_name === this.Subject_selected){
+                        subb = Subs[child].id;
+                        staff = Subs[child].staff_id;
+
+                         this.subject_id = subb;
+                    }
+                }
+               
         },
 
+  getAllSubjects(){
+                fetch('/api/schedule/subject/show')
+                .then(res => { return res.json(); })
+                .then(data => {
+                    this.Subjects = data;
+                }).catch(err => console.log(err));
+            },
         getAllStudents(){
             fetch('/api/students')
             .then(res => {
@@ -182,18 +213,35 @@ export default {
             }).catch(err => console.log(err));
         },
 
+ getStudSubOverall(Student){
+            var status = [];
+            var aData;
+            var child;
+      aData = this.AtRecords;
+      for (var child in aData) {
+        if (aData[child].student_id === Student.id) {
+          status.push(aData[child].status);
+        }
+      }
+      if (status) {
+
+        return status.length;
+      } else {
+        return "null";
+      }
+},
+       
         getAttendances(){
             let Formdata = {
-                    fromdate:this.fromdate,
-                    todate:this.todate,
+                    subject_id:this.subject_id,
                     degree:this.degree.toLowerCase(),
                     department:this.department.toLowerCase(),
                     year:this.year,
                     semester:this.semester,
                     section:this.section
                 }
-                
-                fetch('/api/student/attendance/view/bydate', {
+
+            fetch('/api/student/attendance/view/bysubject', {
                     method: "post",
                     body: JSON.stringify(Formdata),
                     headers:{
@@ -204,15 +252,18 @@ export default {
                 }).then(data => {
 
                     this.hideForm = false;
-                    console.log(data);
 
-                   this.AtDates = data['dates'];
-                   this.AtRecords = data['records'];
+                    console.log(data);
+                    this.AtHours = data['total_hours'];
+                    this.AtRecords = data['records'];                 
+             
                     
                 }).catch(err => {
                     
                 });
-        }
+        },
+
+    
     },
 
     computed:{
@@ -239,6 +290,44 @@ export default {
           });
           }
         },
+
+    
+    filterSubjects(){
+        let Subjects = this.Subjects;
+        let degree = this.degree.toLowerCase();
+        let department = this.department.toLowerCase();
+        let year = this.year;
+        let semester = this.semester;
+        let section = this.section;
+
+        if (degree === "" && department === "" && year === "" && semester === "" && section === "") {
+            return Subjects;
+        }else{
+            return Subjects.filter(function(subject){
+                return (
+                    (degree === "" || degree === subject.degree)
+                    && (department === "" || department === subject.department)
+                    && (year === "" || Number(year) === subject.year)
+                    && (semester === "" || Number(semester) === subject.semester)
+                    && (section === "" || section === subject.section)
+                    );
+            })
+        }
+
+    }
     }
 }
 </script>
+
+
+<style scoped>
+.hover-text{
+    display:none;
+    transition: all ease-in .2s;
+    position: absolute;
+}
+
+.hover-blk:hover .hover-text{
+    display:block;
+}
+</style>

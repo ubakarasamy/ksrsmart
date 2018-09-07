@@ -205,8 +205,8 @@ export default {
                 section:'',
                 section_options:[
                     {text:'a', value:'a'},
-                    {text:'b', vblue:'a'},
-                    {text:'c', vclue:'c'}
+                    {text:'b', value:'a'},
+                    {text:'c', value:'c'}
                 ],
         }
     },

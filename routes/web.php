@@ -21,6 +21,10 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/students', 'StudentController@index')->name('students');
 Route::get('/student/create', 'StudentController@create')->name('student.create');
 
+//Students
+Route::get('/staffs', 'StaffController@index')->name('staffs');
+Route::get('/staff/create', 'StaffController@create')->name('staff.create');
+
 
 
 //Schedule
@@ -36,6 +40,7 @@ Route::get('/student/attendance/make', 'StudentAttendanceController@index')->nam
 Route::get('/student/attendance/view/day', 'StudentAttendanceController@viewByDay')->name('student-attendance-view-day');
 Route::get('/student/attendance/view/month', 'StudentAttendanceController@viewByMonth')->name('student-attendance-view-month');
 Route::get('/student/attendance/view/overall', 'StudentAttendanceController@viewByOverall')->name('student-attendance-view-overall');
+Route::get('/student/attendance/view/subject', 'StudentAttendanceController@viewBySubject')->name('student-attendance-view-subject');
 
 
 

@@ -21,5 +21,18 @@
 	<!-- ICONS -->
 	<!-- <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png"> -->
+
+<style>
+.btn-back{
+    float: right;
+}
+
+.back-btn-div::after {
+    content: "";
+    clear: both;
+    display: block;
+}
+</style>
+
 </head>
 <body>

@@ -4,7 +4,9 @@
     <!-- OVERVIEW -->
 <div class="panel panel-headline">
 	<div class="panel-heading">
-		<h3 class="panel-title">Student Attendance View By Month</h3>
+		<h3 class="panel-title">Student Attendance View By Date</h3>
+
+        
 	</div>
 	<div class="panel-body">
         <div class="row" v-if="hideForm">
@@ -63,18 +65,41 @@
         </form>
 	</div>
     <div class="row" v-if="hideForm === false">
+
+        <a class="btn btn-primary back-btn" href="">Back</a>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <th>Student REG No</th>
                     <th>Name</th>
-                    <th>1{{getSchedule('mon',1)}}</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                    <th>7</th>
+                    <th class="hover-blk">
+                        1) {{getSchedule(this.filterSchedules[0].day,1).cap}}
+                        <span class="hover-text"> {{getSchedule(this.filterSchedules[0].day,1).subject}}</span>
+                    </th>
+                    <th class="hover-blk">
+                        2) {{getSchedule(this.filterSchedules[0].day,2).cap}}
+                        <span class="hover-text"> {{getSchedule(this.filterSchedules[0].day,2).subject}}</span>
+                    </th>
+                    <th class="hover-blk">
+                        3) {{getSchedule(this.filterSchedules[0].day,3).cap}}
+                        <span class="hover-text"> {{getSchedule(this.filterSchedules[0].day,3).subject}}</span>
+                    </th>
+                    <th class="hover-blk">
+                        4) {{getSchedule(this.filterSchedules[0].day,4).cap}}
+                        <span class="hover-text"> {{getSchedule(this.filterSchedules[0].day,4).subject}}</span>
+                    </th>
+                    <th class="hover-blk">
+                        5) {{getSchedule(this.filterSchedules[0].day,5).cap}}
+                        <span class="hover-text"> {{getSchedule(this.filterSchedules[0].day,5).subject}}</span>
+                    </th>
+                    <th class="hover-blk">
+                        6) {{getSchedule(this.filterSchedules[0].day,6).cap}}
+                        <span class="hover-text"> {{getSchedule(this.filterSchedules[0].day,6).subject}}</span>
+                    </th>
+                    <th class="hover-blk">
+                        7) {{getSchedule(this.filterSchedules[0].day,7).cap}}
+                        <span class="hover-text"> {{getSchedule(this.filterSchedules[0].day,7).subject}}</span>
+                    </th>
                 </thead>
                 <tbody>
                     <tr v-for="Student in filteredStudents" v-bind:key="Student.id">
@@ -161,8 +186,8 @@ export default {
                 section:'',
                 section_options:[
                     {text:'a', value:'a'},
-                    {text:'b', vblue:'a'},
-                    {text:'c', vclue:'c'}
+                    {text:'b', value:'b'},
+                    {text:'c', value:'c'}
                 ]
         }
     },
@@ -184,9 +209,7 @@ export default {
         }
       }
       if (status) {
-       var abbr = String(status).split(' ').map(function(item){return item[0]}).join('');
-
-        return {'status':status,'Cap':abbr};
+        return status;
       } else {
         return "null";
       }
@@ -213,7 +236,8 @@ export default {
                     }
                 }
                 if(sche){
-                    return sche;
+                    var abbr = String(sche).split(' ').map(function(item){return item[0]}).join('');
+                    return {'subject':sche, 'cap':abbr};
                 }else{
                     return '__';
                 }
@@ -311,3 +335,17 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.hover-text{
+    display:none;
+    transition: all ease-in .2s;
+    position: absolute;
+    margin-top: -50px;
+}
+
+.hover-blk:hover .hover-text{
+    display:block;
+}
+</style>

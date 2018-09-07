@@ -37,10 +37,15 @@ Route::post('student/attendance/dateandhour', 'StudentAttendanceController@store
 
 Route::post('student/attendance/hour', 'StudentAttendanceController@setStudentStatusEveryHour');
 
+Route::post('student/attendance/hour/all', 'StudentAttendanceController@setStudentStatusEveryHourAll');
+
 Route::post('student/attendance/view/bydate', 'StudentAttendanceController@StudentStatusByDate');
 
 
 Route::post('student/attendance/view/byday', 'StudentAttendanceController@StudentStatusDay');
 
 Route::post('student/attendance/view/byoverall', 'StudentAttendanceController@StudentStatusOverall');
+
+Route::post('student/attendance/view/bysubject', 'StudentAttendanceController@StudentStatusSubject');
+
 

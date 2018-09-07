@@ -232,8 +232,8 @@ export default {
                 section:'',
                 section_options:[
                     {text:'a', value:'a'},
-                    {text:'b', vblue:'a'},
-                    {text:'c', vclue:'c'}
+                    {text:'b', value:'a'},
+                    {text:'c', value:'c'}
                 ],
         }
     },
@@ -254,7 +254,7 @@ export default {
  var staff;
                 var Subs;
      
-                Subs = this.Subjects;
+                Subs = this.filterSubjects;
 
                 for(var child in Subs){
                     if (Subs[child].subject_name === this.Subject_selected){
