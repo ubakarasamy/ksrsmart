@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Response;
 
 class StudentController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *

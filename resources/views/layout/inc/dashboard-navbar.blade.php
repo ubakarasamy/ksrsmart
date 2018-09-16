@@ -18,7 +18,6 @@
 						
                     @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
@@ -26,6 +25,14 @@
                                 </a>
 
                                 <ul class="dropdown-menu">
+									<li>
+										<a href="{{ route('my-profile') }}"><i class="lnr lnr-user"></i>
+                                            Profile</a>
+									</li>
+									<li>
+										<a href="{{ route('my-approvals') }}"><i class="lnr lnr-user"></i>
+                                            My Approvals</a>
+									</li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -71,24 +78,51 @@
 						<li>
 							<a href="{{route('staffs')}}" 
 							class=" @if($route = Route::current()->getName() == 'staffs') <?php echo "active" ?> @endif"
-							><i class="lnr lnr-code"></i> <span>Staffs</span></a>
+							><i class="lnr lnr-user"></i> <span>Staffs</span></a>
 						</li>
 						<li>
 							<a href="{{route('students')}}" 
 							class=" @if($route = Route::current()->getName() == 'students') <?php echo "active" ?> @endif"
-							><i class="lnr lnr-code"></i> <span>Students</span></a>
+							><i class="lnr lnr-users"></i> <span>Students</span></a>
 						</li>
-						{{-- <li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>Charts</span></a></li>
+						<!-- {{-- <li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>Charts</span></a></li>
 						<li><a href="panels.html" class=""><i class="lnr lnr-cog"></i> <span>Panels</span></a></li>
-						<li><a href="notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li> --}}
+						<li><a href="notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li> --}} -->
+						<li>
+								<a href="#subStaffAt" data-toggle="collapse" 
+								class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance') <?php echo "active" ?> @endif"
+								><i class="lnr lnr-calendar-full"></i> <span>Staff Attendance</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								<div id="subStaffAt" class="collapse ">
+									<ul class="nav">
+										<li><a href="{{route('staff-attendance')}}" class="">Make Attendance</a></li>
+										<li><a href="{{route('staff-attendance-edit')}}" class="">Edit Attendance</a></li>
+										<li >
+											<a href="#subStaffview" data-toggle="collapse" 
+											class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'staff-attendance' || $route = Route::current()->getName() == 'staff-attendance') <?php echo "active" ?> @endif"
+											><span>View Attendance</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+											<div id="subStaffview" class="collapse">
+												<ul class="nav">
+													<li><a href="{{route('staff-attendance-view-day')}}" class="">Day</a></li>
+													<li><a href="{{route('staff-attendance-view-month')}}" class="">Month</a></li>
+													<li><a href="{{route('staff-attendance-view-overall')}}" class="">Overall</a></li>
+												</ul>
+											</div>
+										</li>
+									</ul>
+						</li>
+						<li>
+							<a href="{{route('staff-approvals')}}" 
+							class=" @if($route = Route::current()->getName() == 'staff-approvals') <?php echo "active" ?> @endif"
+							><i class="lnr lnr-user"></i> <span>Staff Approvals</span></a>
+						</li>
 						<li>
 								<a href="#subStudAt" data-toggle="collapse" 
 								class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance') <?php echo "active" ?> @endif"
-								><i class="lnr lnr-dice"></i> <span>Student Attendance</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								><i class="lnr lnr-chart-bars"></i> <span>Student Attendance</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 								<div id="subStudAt" class="collapse ">
 									<ul class="nav">
 										<li><a href="{{route('student-attendance')}}" class="">Make Attendance</a></li>
-										<li><a href="{{route('student-attendance')}}" class="">Edit Attendance</a></li>
+										<li><a href="{{route('student-attendance-edit')}}" class="">Edit Attendance</a></li>
 										<li >
 											<a href="#subStudAtView" data-toggle="collapse" 
 											class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance') <?php echo "active" ?> @endif"
@@ -109,7 +143,7 @@
 						<li>
 							<a href="#subSchedule" data-toggle="collapse" 
 							class="collapsed @if($route = Route::current()->getName() == 'subject-home' || $route = Route::current()->getName() == 'schedule-assign' || $route = Route::current()->getName() == 'schedule-view') <?php echo "active" ?> @endif"
-							><i class="lnr lnr-dice"></i> <span>Student Schedule</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							><i class="lnr lnr-pie-chart"></i> <span>Student Schedule</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subSchedule" class="collapse ">
 								<ul class="nav">
 									<li><a href="{{route('subject-home')}}" class="">Add Subject</a></li>

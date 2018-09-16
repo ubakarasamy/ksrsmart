@@ -23,6 +23,11 @@ class StudentAttendanceController extends Controller
     {
         return view('studentattendance.make');
     }
+    public function EditAt()
+    {
+        return view('studentattendance.edit');
+    }
+    
     public function viewByDay(){
         return view('studentattendance.viewbyday');
     }

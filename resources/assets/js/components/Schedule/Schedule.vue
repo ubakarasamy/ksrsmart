@@ -78,7 +78,7 @@
 									</table>
             </div>
             <!-- SUBJECT LISTING -->
-                    <div class="container">
+                    <div class="row">
                         <h3>Create subject</h3>
                     <label for="subject_name" class="">Subject Name</label>
                     <input required="true" v-model="subject_name" type="text" class="form-control" placeholder="Subject Name" id="subject_name" name="subject_name">
@@ -147,7 +147,7 @@ export default {
                 section:'',
                 section_options:[
                     {text:'a', value:'a'},
-                    {text:'b', value:'a'},
+                    {text:'b', value:'b'},
                     {text:'c', value:'c'}
                 ],
         }

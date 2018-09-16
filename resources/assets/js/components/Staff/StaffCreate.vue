@@ -10,73 +10,59 @@
 	<div class="row">
         <div class="container">
             <div class="col-sm-6">
-            <form @submit.prevent="CreateStudent()">
+            <form @submit.prevent="CreateStaff()">
             <label for="name" class="">Name</label>
             <input v-model="name" type="text" class="form-control" placeholder="Name" id="name" name="name">
             <br>
             <label for="email" class="">Email</label>
             <input v-model="email" type="email" class="form-control" placeholder="Email" id="email" name="email">
             <br>
-            <label for="reg_no" class="">Register Number</label>
-            <input v-model="reg_no" type="text" class="form-control" placeholder="Register Number" id="reg_no" name="reg_no">
-			<br>
-            <label for="degree" class="">Degree</label>
-            <select v-model="degree" class="form-control" id="degree" name="degree">
-                <option selected disabled>Choose</option>
-				<option v-for="degree_option in degree_options" v-bind:key="degree_option.value">{{degree_option.text}}</option>
-			</select>
+            <label for="eid" class="">Employee ID Number</label>
+            <input v-model="eid" type="text" class="form-control" placeholder="Register Number" id="eid" name="eid">
             <br>
             <label for="department" class="">Department</label>
-			<select v-model="department" class="form-control" id="department" name="department">
-            <option selected disabled>Choose</option>
-				<option v-for="department_option in department_options" v-bind:key="department_option.value">{{department_option.text}}</option>
+			<select v-model="working_department" class="form-control" id="department" name="department">
+            <option selected >Choose</option>
+				<option v-for="department_option in department_options" v-bind:value="department_option.value">{{department_option.text}}</option>
 			</select>
             <br>
-            <label for="year" class="">Year</label>
-			<select v-model="year" class="form-control" id="year" name="year">
-            <option selected disabled>Choose</option>
-				<option v-for="year_option in year_options" v-bind:key="year_option.value">{{year_option.text}}</option>
+            <label for="role" class="">Role</label>
+			<select v-model="dashboard_role" class="form-control" id="role" name="role">
+            <option selected >Choose</option>
+				<option v-for="dashboard_role_option in dashboard_role_options" v-bind:value="dashboard_role_option.value">{{dashboard_role_option.text}}</option>
 			</select>
             <br>
-            <label for="semester" class="">Semester</label>
-			<select v-model="semester" class="form-control" id="semester" name="semester">
-            <option selected disabled>Choose</option>
-				<option v-for="semester_option in semester_options" v-bind:key="semester_option.value">{{semester_option.text}}</option>
+
+            <label for="occupation" class="">occupation</label>
+			<select v-model="occupation" class="form-control" id="occupation" name="occupation">
+            <option selected >Choose</option>
+				<option v-for="occupation_option in occupation_options" v-bind:value="occupation_option.value">{{occupation_option.text}}</option>
 			</select>
             <br>
-            <label for="section" class="">Section</label>
-			<select v-model="section" class="form-control" id="section" name="section">
-            <option selected disabled>Choose</option>
-				<option v-for="section_option in section_options" v-bind:key="section_option.value">{{section_option.text}}</option>
-			</select>
+            <label for="password" class="">password</label>
+            <input v-model="password" type="password" class="form-control" placeholder="password" id="password" name="password">
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>
             </form>		
             </div>
             <div class="col-sm-6">
-                <label class="">Name</label>
+            <label class="">Name</label>
             <p v-text="name"></p>
             <br>
             <label  class="">Email</label>
             <p  v-text="email"></p>
             <br>
             <label  class="">Register Number</label>
-            <p v-text="reg_no"></p>
+            <p v-text="eid"></p>
 			<br>
-            <label  class="">Degree</label>
-            <p v-text="degree"></p>
-            <br>
             <label  class="">Department</label>
-			<p v-text="department"></p>
+			<p v-text="working_department"></p>
             <br>
-            <label class="">Year</label>
-			<p v-text="year"></p>
+            <label  class="">Role</label>
+            <p v-text="dashboard_role"></p>
             <br>
-            <label  class="">Semester</label>
-			<p v-text="semester"></p>
-            <br>
-            <label  class="">Section</label>
-            <p v-text="section"></p>
+            <label  class="">occupation</label>
+			<p v-text="occupation"></p>
             <br>
             </div>
         </div>			
@@ -91,15 +77,15 @@
 
         data(){
             return {
-                name:'',
+                Staffs:[],
+            edit:false,
+
+            name:'',
                 email:'',
-                reg_no:'',
-                degree:'',
-                degree_options:[
-                    {text:'BE', value:'be'},
-                    {text:'ME', value:'me'}
-                ],
-                department:'',
+                eid:'',
+                password:'',
+
+                working_department:'',
                 department_options:[
                     {text:'ECE', value:'ece'},
                     {text:'EEE', value:'eee'},
@@ -109,49 +95,42 @@
                     {text:'CIVIL', value:'cicil'},
                     {text:'AUTO', value:'auto'},
                 ],
-                year:'',
-                year_options:[
-                    {text:'1', value:'1'},
-                    {text:'2', value:'2'},
-                    {text:'3', value:'3'},
-                    {text:'4', value:'4'}
+
+                dashboard_role:'',
+                dashboard_role_options:
+                [
+                    {text:'Super admin',value:'superadmin'},
+                    {text:'Admin',value:'admin'},
+                    {text:'Sub Admin',value:'subadmin'},
+                    {text:'Staff',value:''},
+                    {text:'Sub Staff',value:'substaff'}
                 ],
-                semester:'',
-                semester_options:[
-                    {text:'1', value:'1'},
-                    {text:'2', value:'2'},
-                    {text:'3', value:'3'},
-                    {text:'4', value:'4'},
-                    {text:'5', value:'5'},
-                    {text:'6', value:'6'},
-                    {text:'7', value:'7'},
-                    {text:'8', value:'8'},
-                ],
-                section:'',
-                section_options:[
-                    {text:'a', value:'a'},
-                    {text:'b', vblue:'a'},
-                    {text:'c', vclue:'c'}
-                ],
-                status:'current',
+                occupation:'',
+                occupation_options:[
+                    {text:'Hod', value:'hod'},
+                    {text:'Professor', value:'professor'},
+                    {text:'Associate Professor', value:'associateprofessor'},
+                    {text:'Lab Incharge', value:'labincharge'},
+                    {text:'Non Teaching', value:'nonteaching'}
+
+                ]
 
             }
         },
         methods:{
-            CreateStudent(){
+            CreateStaff(){
                 let Formdata = {
                     name:this.name,
                     email:this.email,
-                    reg_no:this.reg_no,
-                    degree:this.degree,
-                    department:this.department,
-                    year:this.year,
+                    eid:this.eid,
+                    working_department:this.working_department,
+                    dashboard_role:this.dashboard_role,
+                    occupation:this.occupation,
                     semester:this.semester,
-                    section:this.section,
-                    status:this.status
+                    password:this.password
                 }
 
-                fetch('/api/student/store', {
+                fetch('/api/staff/store', {
                     method: "post",
                     body: JSON.stringify(Formdata),
                     headers:{
@@ -161,11 +140,7 @@
                     return response.json();
                 }).then(data => {
                     // Work with JSON data here
-                    if(data = 'success'){
-                        alert('successfully Created');
-                    }else{
-                        alert('Something went wrong!');
-                    }
+                    
                     console.log(data);
                 }).catch(err => {
                     // Do something for an error here

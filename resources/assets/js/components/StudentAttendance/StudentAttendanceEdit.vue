@@ -279,7 +279,7 @@ console.log(this.filterSchedules[0].staff_id);
             .then(res => { return res.json(); })
                 .then(data => {
                     this.Schedules = data;
-                    console.log(data);
+                    // console.log(data);
                 }).catch(err => console.log(err));
         },
 

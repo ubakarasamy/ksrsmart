@@ -6,7 +6,7 @@
 	<div class="panel-heading">
 		<h3 class="panel-title">Student Profile</h3>
 
-        <a href="/student/create" class="btn btn-primary float-right">Create Student</a>
+        <a href="student/create" class="btn btn-primary float-right">Create Student</a>
 	</div>
 	<div class="panel-body">
 		<div class="row">

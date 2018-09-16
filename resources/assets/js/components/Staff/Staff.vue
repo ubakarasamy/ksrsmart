@@ -4,9 +4,9 @@
     <!-- OVERVIEW -->
 <div class="panel panel-headline">
 	<div class="panel-heading">
-		<h3 class="panel-title">Student Profile</h3>
+		<h3 class="panel-title">Staff Profile</h3>
 
-        <a href="/student/create" class="btn btn-primary float-right">Create Student</a>
+        <a href="staff/create" class="btn btn-primary float-right">Create Student</a>
 	</div>
 	<div class="panel-body">
 		<div class="row">
@@ -17,17 +17,13 @@
 											<tr>
 												<th>#Register No</th>
 												<th>Name</th>
-												<th>Degree</th>
-												<th>Department</th>
-                                                <th>Year</th>
-                                                <th>Section</th>
+												<th>Edit</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="Stud in Studs" v-bind:key="Stud.id">
-                                                <td>{{Stud.reg_no}}</td>
-												<td>{{Stud.name}}</td>
-												
+											<tr v-for="Staff in Staffs" v-bind:key="Staff.id">
+                                                <td>{{Staff.eid}}</td>
+												<td>{{Staff.name}}</td>
                                                 <td>
                                                     <button class="btn btn-primary" @click="EditClick(Staff)">
                                                         Edit
@@ -55,15 +51,15 @@
             <input disabled="true" v-model="eid" type="text" class="form-control" placeholder="Register Number" id="eid" name="eid">
             <br>
             <label for="department" class="">Department</label>
-			<select disabled="true" v-model="department" class="form-control" id="department" name="department">
+			<select disabled="true" v-model="working_department" class="form-control" id="department" name="department">
             <option selected >Choose</option>
 				<option v-for="department_option in department_options" v-bind:key="department_option.value">{{department_option.text}}</option>
 			</select>
             <br>
             <label for="role" class="">Role</label>
-			<select disabled="true" v-model="role" class="form-control" id="role" name="role">
+			<select disabled="true" v-model="dashboard_role" class="form-control" id="role" name="role">
             <option selected >Choose</option>
-				<option v-for="role_option in role_options" v-bind:key="role_option.value">{{role_option.text}}</option>
+				<option v-for="dashboard_role_option in dashboard_role_options" v-bind:key="dashboard_role_option.value">{{dashboard_role_option.text}}</option>
 			</select>
             <br>
 
@@ -93,16 +89,13 @@
             <p  v-text="email"></p>
             <br>
             <label  class="">Register Number</label>
-            <p v-text="reg_no"></p>
+            <p v-text="eid"></p>
 			<br>
-            <label  class="">Degree</label>
-            <p v-text="degree"></p>
-            <br>
             <label  class="">Department</label>
-			<p v-text="department"></p>
+			<p v-text="working_department"></p>
             <br>
-            <label class="">role</label>
-			<p v-text="role"></p>
+            <label  class="">Database Role</label>
+            <p v-text="dashboard_role"></p>
             <br>
             <label  class="">occupation</label>
 			<p v-text="occupation"></p>
@@ -129,31 +122,60 @@ export default {
             Staffs:[],
             edit:false,
 
-            name:'',
+             name:'',
                 email:'',
                 eid:'',
-                degree:'',
-                working_department:'',
-                dashboard_role:'',
-                occupation:'',
+                password:'',
+                staff_id:'',
                 status:'',
-                password:''
+                status_options:[
+                    {text:'Current', value:'current'},
+                    {text:'Resigned', value:'resigned'}
+                ],
+                working_department:'',
+                department_options:[
+                    {text:'ECE', value:'ece'},
+                    {text:'EEE', value:'eee'},
+                    {text:'CSE', value:'cse'},
+                    {text:'MECH', value:'mech'},
+                    {text:'IT', value:'it'},
+                    {text:'CIVIL', value:'cicil'},
+                    {text:'AUTO', value:'auto'},
+                ],
+                dashboard_role:'',
+                dashboard_role_options:
+                [
+                    {text:'Super admin',value:'superadmin'},
+                    {text:'Admin',value:'admin'},
+                    {text:'Sub Admin',value:'subadmin'},
+                    {text:'Staff',value:''},
+                    {text:'Sub Staff',value:'substaff'}
+                ],
+                occupation:'',
+                occupation_options:[
+                    {text:'Hod', value:'hod'},
+                    {text:'Professor', value:'professor'},
+                    {text:'Associate Professor', value:'associateprofessor'},
+                    {text:'Lab Incharge', value:'labincharge'},
+                    {text:'Non Teaching', value:'nonteaching'}
+
+                ]
         }
     },
     mounted() {
-        this.getAllStudents();
+        this.getAllStaffs();
     },
     methods:{
-        getAllStudents(){
+        getAllStaffs(){
             fetch('/api/staffs')
             .then(res => {
                 return res.json();
             })
             .then(data => {
-                this.Studs = data;
+                this.Staffs = data;
             }).catch(err => console.log(err));
         },
-        EditClick(Stud){
+        EditClick(Staff){
             this.edit = true;
             this.name = Staff.name;
             this.email = Staff.email;
@@ -179,7 +201,7 @@ export default {
                     staff_id:this.staff_id,
                 }
 
-                fetch('/api/student/update', {
+                fetch('/api/staff/update', {
                     method: "put",
                     body: JSON.stringify(Formdata),
                     headers:{

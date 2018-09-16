@@ -42,19 +42,29 @@ class SubjectController extends Controller
         $subject->section = $request->section;
         $subject->subject_id = $request->subject_id;
         $subject->subject_name = $request->subject_name;
-        $subject->user_id = User::where('eid',$request->staff_id)->first()->id;
+
+        if(empty(User::where('eid',$request->staff_id)->first()->id)){
+            $errors['staff_id'] = 'Staff Id not matching';
+        }else{
+            $subject->user_id = User::where('eid',$request->staff_id)->first()->id;
+        }
+        
         $subject->semester_start = $aca->semester_start;
         $subject->save();
 
         if($subject->save()){
-            return response()->json('success');
+            $stat = 'success';
         }else{
-            return response()->json('failed');
+            $stat = 'failed';
         }
+
+        return response()->json(['errors'=>$errors,'status'=>$stat]);
+
+        
     }else{
         return response()->json('exists');
     }
-
+            // return response()->json($request);
     }
 
     /**

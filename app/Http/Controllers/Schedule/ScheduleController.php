@@ -11,6 +11,7 @@ use App\StudentSubject;
 
 class ScheduleController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
