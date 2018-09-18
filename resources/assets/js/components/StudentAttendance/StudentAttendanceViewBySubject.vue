@@ -143,12 +143,12 @@ export default {
                 section:'',
                 section_options:[
                     {text:'a', value:'a'},
-                    {text:'b', value:'a'},
+                    {text:'b', value:'b'},
                     {text:'c', value:'c'}
                 ]
         }
     },
-     props:['authenticateduser'],
+     props:['authenticateduser', 'authrole'],
     mounted(){
         this.getAllStudents();
         this.getAllSubjects();

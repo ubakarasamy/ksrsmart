@@ -65,8 +65,10 @@
         </form>
 	</div>
     <div class="row" v-if="hideForm === false">
-
-        <a class="btn btn-primary back-btn" href="">Back</a>
+        <div class="back-div">
+            <a class="btn btn-primary back-btn" href="">Back</a>
+        </div>
+        
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -191,7 +193,7 @@ export default {
                 ]
         }
     },
-     props:['authenticateduser'],
+          props:['authenticateduser', 'authrole'],
     mounted(){
         this.getAllStudents();
         this.getAllShedules();

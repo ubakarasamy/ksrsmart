@@ -13,7 +13,7 @@
 							<div class="row">
 								<div class="col-md-3">
 									<div class="metric">
-										<span class="icon"><i class="fa fa-download"></i></span>
+										<span class="icon"><i class="fa fa-user"></i></span>
 										<p>
 											<span class="number">1,252</span>
 											<span class="title">Students</span>
@@ -22,7 +22,7 @@
 								</div>
 								<div class="col-md-3">
 									<div class="metric">
-										<span class="icon"><i class="fa fa-shopping-bag"></i></span>
+										<span class="icon"><i class="fa fa-users"></i></span>
 										<p>
 											<span class="number">203</span>
 											<span class="title">Staffs</span>

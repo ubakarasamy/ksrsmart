@@ -1382,7 +1382,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-module.exports = __webpack_require__(120);
+module.exports = __webpack_require__(122);
 
 
 /***/ }),
@@ -1432,7 +1432,7 @@ Vue.component('staff-attendance-viewbyoverall', __webpack_require__(106));
 
 Vue.component('staff-approvals-index', __webpack_require__(111));
 Vue.component('staff-myprofile', __webpack_require__(114));
-Vue.component('staff-approvals-show', __webpack_require__(117));
+Vue.component('staff-approvals-show', __webpack_require__(119));
 
 var app = new Vue({
   el: '#app'
@@ -43643,7 +43643,7 @@ var staticRenderFns = [
             _c("div", { staticClass: "col-md-3" }, [
               _c("div", { staticClass: "metric" }, [
                 _c("span", { staticClass: "icon" }, [
-                  _c("i", { staticClass: "fa fa-download" })
+                  _c("i", { staticClass: "lnr lnr-users" })
                 ]),
                 _vm._v(" "),
                 _c("p", [
@@ -43657,7 +43657,7 @@ var staticRenderFns = [
             _c("div", { staticClass: "col-md-3" }, [
               _c("div", { staticClass: "metric" }, [
                 _c("span", { staticClass: "icon" }, [
-                  _c("i", { staticClass: "fa fa-shopping-bag" })
+                  _c("i", { staticClass: "lnr lnr-user" })
                 ]),
                 _vm._v(" "),
                 _c("p", [
@@ -43744,7 +43744,7 @@ var content = __webpack_require__(46);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("46f8c037", content, false, {});
+var update = __webpack_require__(3)("c94b7238", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -43768,7 +43768,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.panel-heading[data-v-2022fde0]::after\r\n{\r\n    content: \"\";\r\n    clear: both;\r\n    display: block;\n}\r\n", ""]);
+exports.push([module.i, "\n.panel-heading[data-v-2022fde0]::after\n{\n    content: \"\";\n    clear: both;\n    display: block;\n}\n.d-select[data-v-2022fde0]\n{\n    margin-bottom: 30px;\n    width: 250px;\n}\n", ""]);
 
 // exports
 
@@ -43941,6 +43941,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -43948,6 +43956,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Studs: [],
             edit: false,
 
+            disAccess: '',
+            Fdepartment: '',
+            Fdepartment_options: [{ text: 'ECE', value: 'ece' }, { text: 'EEE', value: 'eee' }, { text: 'CSE', value: 'cse' }, { text: 'MECH', value: 'mech' }, { text: 'IT', value: 'it' }, { text: 'CIVIL', value: 'cicil' }, { text: 'AUTO', value: 'auto' }],
             name: '',
             email: '',
             reg_no: '',
@@ -43967,7 +43978,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStudents();
     },
@@ -44033,6 +44044,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         ClickBack: function ClickBack() {
             this.edit = false;
         }
+    },
+    computed: {
+        filteredStudents: function filteredStudents() {
+
+            var Students = this.Studs;
+
+            var w_dapart = this.authenticateduser.working_department;
+
+            if (this.authrole === 3 || this.authrole === 4) {
+                //if user is hod or professor show their staffs
+                this.Fdepartment = w_dapart;
+                this.disAccess = true;
+            }
+
+            var depart = this.Fdepartment.toLowerCase();
+
+            if (depart === "") {
+                return Students;
+            } else {
+                return Students.filter(function (stud) {
+                    return stud.department === depart;
+                });
+            }
+        }
     }
 });
 
@@ -44051,47 +44086,104 @@ var render = function() {
       _c("div", { staticClass: "panel-body" }, [
         _c("div", { staticClass: "row" }, [
           _vm.edit === false
-            ? _c("div", { staticClass: "panel table-responsive" }, [
-                _c("table", { staticClass: "table" }, [
-                  _vm._m(1),
+            ? _c("div", {}, [
+                _c("div", { staticClass: "form-group d-select" }, [
+                  _c("label", { attrs: { for: "department" } }, [
+                    _vm._v("Department")
+                  ]),
                   _vm._v(" "),
                   _c(
-                    "tbody",
-                    _vm._l(_vm.Studs, function(Stud) {
-                      return _c("tr", { key: Stud.id }, [
-                        _c("td", [_vm._v(_vm._s(Stud.reg_no))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(Stud.name))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(Stud.degree))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(Stud.department))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(Stud.year))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(Stud.section))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              on: {
-                                click: function($event) {
-                                  _vm.EditClick(Stud)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\r\n                                                        Edit\r\n                                                    "
-                              )
-                            ]
-                          )
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.Fdepartment,
+                          expression: "Fdepartment"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        disabled: _vm.disAccess,
+                        id: "department",
+                        name: "department"
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.Fdepartment = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { selected: "", disabled: "" } }, [
+                        _vm._v("Choose")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.Fdepartment_options, function(
+                        Fdepartment_option
+                      ) {
+                        return _c("option", { key: Fdepartment_option.value }, [
+                          _vm._v(_vm._s(Fdepartment_option.text))
                         ])
-                      ])
-                    })
+                      })
+                    ],
+                    2
                   )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c("table", { staticClass: "table" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.filteredStudents, function(Stud) {
+                        return _c("tr", { key: Stud.id }, [
+                          _c("td", [_vm._v(_vm._s(Stud.reg_no))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(Stud.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(Stud.degree))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(Stud.department))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(Stud.year))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(Stud.section))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                on: {
+                                  click: function($event) {
+                                    _vm.EditClick(Stud)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                                        Edit\n                                                    "
+                                )
+                              ]
+                            )
+                          ])
+                        ])
+                      })
+                    )
+                  ])
                 ])
               ])
             : _vm._e(),
@@ -44787,7 +44879,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     methods: {
         CreateStudent: function CreateStudent() {
             var Formdata = {
@@ -45349,7 +45441,7 @@ var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("be2b955a", content, false, {});
+var update = __webpack_require__(3)("41f81b40", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -45373,7 +45465,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.panel-heading[data-v-7a37542c]::after\r\n{\r\n    content: \"\";\r\n    clear: both;\r\n    display: block;\n}\r\n", ""]);
+exports.push([module.i, "\n.panel-heading[data-v-7a37542c]::after\n{\n    content: \"\";\n    clear: both;\n    display: block;\n}\n.department-select[data-v-7a37542c]{\n    padding-left: 30px;\n}\n", ""]);
 
 // exports
 
@@ -45508,6 +45600,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -45515,6 +45610,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Staffs: [],
             edit: false,
 
+            disAccess: false,
             w_department: '',
             name: '',
             email: '',
@@ -45528,16 +45624,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             dashboard_role: '',
             dashboard_role_options: [{ text: 'Super admin', value: 'superadmin' }, { text: 'Admin', value: 'admin' }, { text: 'Sub Admin', value: 'subadmin' }, { text: 'Staff', value: '' }, { text: 'Sub Staff', value: 'substaff' }],
             occupation: '',
-            occupation_options: [{ text: 'Hod', value: 'hod' }, { text: 'Professor', value: 'professor' }, { text: 'Associate Professor', value: 'associateprofessor' }, { text: 'Lab Incharge', value: 'labincharge' }, { text: 'Non Teaching', value: 'nonteaching' }]
+            occupation_options: [{ text: 'Hod', value: 'hod' }, { text: 'Professor', value: 'professor' }, { text: 'Associate Professor', value: 'associateprofessor' }, { text: 'Lab Incharge', value: 'labincharge' }, { text: 'Non Teaching', value: 'nonteaching' }],
+            disableAuth: false
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStaffs();
+        this.disRole();
     },
 
     methods: {
+        disRole: function disRole() {
+            if (this.authrole !== 3) {
+                this.disableAuth = true;
+            }
+        },
         getAllStaffs: function getAllStaffs() {
             var _this = this;
 
@@ -45600,6 +45703,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         filteredStaffs: function filteredStaffs() {
             var depart = this.w_department.toLowerCase();
+
+            var w_dapart = this.authenticateduser.working_department;
+
+            if (this.authrole === 3 || this.authrole === 4) {
+                //if user is hod or professor show their staffs
+                depart = w_dapart;
+                this.disAccess = true;
+            }
+
             if (depart === "") {
                 return this.Staffs;
             } else {
@@ -45621,61 +45733,83 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "home" }, [
     _c("div", { staticClass: "panel panel-headline" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "panel-heading" }, [
+        _c("h3", { staticClass: "panel-title" }, [_vm._v("Staff Profiles")]),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-primary float-right",
+            attrs: { disabled: _vm.disableAuth, href: "staff/create" }
+          },
+          [_vm._v("Create Staff")]
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "panel-body" }, [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "department" } }, [
-              _vm._v("Department")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.w_department,
-                    expression: "w_department"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { id: "department", name: "department" },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.w_department = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
-                }
-              },
-              [
-                _c("option", { attrs: { selected: "" } }, [_vm._v("Choose")]),
-                _vm._v(" "),
-                _vm._l(_vm.department_options, function(department_option) {
-                  return _c("option", { key: department_option.value }, [
-                    _vm._v(_vm._s(department_option.text))
-                  ])
-                })
-              ],
-              2
-            )
-          ]),
-          _vm._v(" "),
           _vm.edit === false
             ? _c("div", { staticClass: "panel table-responsive" }, [
+                _c("div", { staticClass: "form-group department-select" }, [
+                  _c("label", { attrs: { for: "department" } }, [
+                    _vm._v("Department")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.w_department,
+                          expression: "w_department"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      staticStyle: { width: "250px" },
+                      attrs: {
+                        disabled: _vm.disAccess,
+                        id: "department",
+                        name: "department"
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.w_department = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { selected: "" } }, [
+                        _vm._v("Choose")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.department_options, function(
+                        department_option
+                      ) {
+                        return _c("option", { key: department_option.value }, [
+                          _vm._v(_vm._s(department_option.text))
+                        ])
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("br")
+                ]),
+                _vm._v(" "),
                 _c("table", { staticClass: "table" }, [
-                  _vm._m(1),
+                  _vm._m(0),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -45690,6 +45824,7 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-primary",
+                              attrs: { disabled: _vm.disableAuth },
                               on: {
                                 click: function($event) {
                                   _vm.EditClick(Staff)
@@ -45698,7 +45833,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\r\n                                                        Edit\r\n                                                    "
+                                "\n                                                        Edit\n                                                    "
                               )
                             ]
                           )
@@ -46171,23 +46306,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-heading" }, [
-      _c("h3", { staticClass: "panel-title" }, [_vm._v("Staff Profile")]),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-primary float-right",
-          attrs: { href: "staff/create" }
-        },
-        [_vm._v("Create Student")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("#Register No")]),
@@ -46358,7 +46476,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     methods: {
         CreateStaff: function CreateStaff() {
             var Formdata = {
@@ -46971,7 +47089,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllSubjects();
     },
@@ -47069,7 +47187,7 @@ var render = function() {
               },
               [
                 _vm.SelectionBar === true
-                  ? _c("div", { staticClass: "row" }, [
+                  ? _c("div", { staticClass: "container" }, [
                       _c("div", { staticClass: "form-group col-sm-2" }, [
                         _c("label", { attrs: { for: "degree" } }, [
                           _vm._v("Degree")
@@ -47365,7 +47483,7 @@ var render = function() {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.SelectionBar === false
-                  ? _c("div", { staticClass: "row" }, [
+                  ? _c("div", { staticClass: "container" }, [
                       _c(
                         "div",
                         { staticClass: "subjects-listing table-responsive" },
@@ -47808,7 +47926,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllShedules();
         this.getAllSubjects();
@@ -48852,7 +48970,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllShedules();
         this.getAllSubjects();
@@ -50398,7 +50516,7 @@ var render = function() {
                             _vm._l(_vm.atStatuses, function(atStatus) {
                               return _c("option", [
                                 _vm._v(
-                                  "\r\n    " + _vm._s(atStatus.text) + "\r\n  "
+                                  "\n    " + _vm._s(atStatus.text) + "\n  "
                                 )
                               ])
                             })
@@ -50695,7 +50813,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getAllStudents();
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     methods: {
         getStudentStatus: function getStudentStatus(student) {
             var status;
@@ -51439,7 +51557,7 @@ var render = function() {
                             _vm._l(_vm.atStatuses, function(atStatus) {
                               return _c("option", [
                                 _vm._v(
-                                  "\r\n    " + _vm._s(atStatus.text) + "\r\n  "
+                                  "\n    " + _vm._s(atStatus.text) + "\n  "
                                 )
                               ])
                             })
@@ -51576,7 +51694,7 @@ var content = __webpack_require__(78);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("6a5f165d", content, false, {});
+var update = __webpack_require__(3)("7f5fa690", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -51600,7 +51718,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.hover-text[data-v-7d6cf684]{\r\n    display:none;\r\n    -webkit-transition: all ease-in .2s;\r\n    transition: all ease-in .2s;\r\n    position: absolute;\r\n    margin-top: -50px;\n}\n.hover-blk:hover .hover-text[data-v-7d6cf684]{\r\n    display:block;\n}\r\n", ""]);
+exports.push([module.i, "\n.hover-text[data-v-7d6cf684]{\n    display:none;\n    -webkit-transition: all ease-in .2s;\n    transition: all ease-in .2s;\n    position: absolute;\n    margin-top: -50px;\n}\n.hover-blk:hover .hover-text[data-v-7d6cf684]{\n    display:block;\n}\n", ""]);
 
 // exports
 
@@ -51611,6 +51729,8 @@ exports.push([module.i, "\n.hover-text[data-v-7d6cf684]{\r\n    display:none;\r\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -51775,7 +51895,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStudents();
         this.getAllShedules();
@@ -52264,14 +52384,7 @@ var render = function() {
         _vm._v(" "),
         _vm.hideForm === false
           ? _c("div", { staticClass: "row" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-primary back-btn",
-                  attrs: { href: "" }
-                },
-                [_vm._v("Back")]
-              ),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "table-responsive" }, [
                 _c("table", { staticClass: "table" }, [
@@ -52282,11 +52395,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", { staticClass: "hover-blk" }, [
                       _vm._v(
-                        "\r\n                        1) " +
+                        "\n                        1) " +
                           _vm._s(
                             _vm.getSchedule(this.filterSchedules[0].day, 1).cap
                           ) +
-                          "\r\n                        "
+                          "\n                        "
                       ),
                       _c("span", { staticClass: "hover-text" }, [
                         _vm._v(
@@ -52301,11 +52414,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", { staticClass: "hover-blk" }, [
                       _vm._v(
-                        "\r\n                        2) " +
+                        "\n                        2) " +
                           _vm._s(
                             _vm.getSchedule(this.filterSchedules[0].day, 2).cap
                           ) +
-                          "\r\n                        "
+                          "\n                        "
                       ),
                       _c("span", { staticClass: "hover-text" }, [
                         _vm._v(
@@ -52320,11 +52433,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", { staticClass: "hover-blk" }, [
                       _vm._v(
-                        "\r\n                        3) " +
+                        "\n                        3) " +
                           _vm._s(
                             _vm.getSchedule(this.filterSchedules[0].day, 3).cap
                           ) +
-                          "\r\n                        "
+                          "\n                        "
                       ),
                       _c("span", { staticClass: "hover-text" }, [
                         _vm._v(
@@ -52339,11 +52452,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", { staticClass: "hover-blk" }, [
                       _vm._v(
-                        "\r\n                        4) " +
+                        "\n                        4) " +
                           _vm._s(
                             _vm.getSchedule(this.filterSchedules[0].day, 4).cap
                           ) +
-                          "\r\n                        "
+                          "\n                        "
                       ),
                       _c("span", { staticClass: "hover-text" }, [
                         _vm._v(
@@ -52358,11 +52471,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", { staticClass: "hover-blk" }, [
                       _vm._v(
-                        "\r\n                        5) " +
+                        "\n                        5) " +
                           _vm._s(
                             _vm.getSchedule(this.filterSchedules[0].day, 5).cap
                           ) +
-                          "\r\n                        "
+                          "\n                        "
                       ),
                       _c("span", { staticClass: "hover-text" }, [
                         _vm._v(
@@ -52377,11 +52490,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", { staticClass: "hover-blk" }, [
                       _vm._v(
-                        "\r\n                        6) " +
+                        "\n                        6) " +
                           _vm._s(
                             _vm.getSchedule(this.filterSchedules[0].day, 6).cap
                           ) +
-                          "\r\n                        "
+                          "\n                        "
                       ),
                       _c("span", { staticClass: "hover-text" }, [
                         _vm._v(
@@ -52396,11 +52509,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", { staticClass: "hover-blk" }, [
                       _vm._v(
-                        "\r\n                        7) " +
+                        "\n                        7) " +
                           _vm._s(
                             _vm.getSchedule(this.filterSchedules[0].day, 7).cap
                           ) +
-                          "\r\n                        "
+                          "\n                        "
                       ),
                       _c("span", { staticClass: "hover-text" }, [
                         _vm._v(
@@ -52424,57 +52537,57 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\r\n                            " +
+                            "\n                            " +
                               _vm._s(_vm.getAttendance(Student, 1)) +
-                              " \r\n                        "
+                              " \n                        "
                           )
                         ]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\r\n                            " +
+                            "\n                            " +
                               _vm._s(_vm.getAttendance(Student, 2)) +
-                              " \r\n                        "
+                              " \n                        "
                           )
                         ]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\r\n                            " +
+                            "\n                            " +
                               _vm._s(_vm.getAttendance(Student, 3)) +
-                              " \r\n                        "
+                              " \n                        "
                           )
                         ]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\r\n                            " +
+                            "\n                            " +
                               _vm._s(_vm.getAttendance(Student, 4)) +
-                              " \r\n                        "
+                              " \n                        "
                           )
                         ]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\r\n                            " +
+                            "\n                            " +
                               _vm._s(_vm.getAttendance(Student, 5)) +
-                              " \r\n                        "
+                              " \n                        "
                           )
                         ]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\r\n                            " +
+                            "\n                            " +
                               _vm._s(_vm.getAttendance(Student, 6)) +
-                              " \r\n                        "
+                              " \n                        "
                           )
                         ]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\r\n                            " +
+                            "\n                            " +
                               _vm._s(_vm.getAttendance(Student, 7)) +
-                              " \r\n                        "
+                              " \n                        "
                           )
                         ])
                       ])
@@ -52497,6 +52610,18 @@ var staticRenderFns = [
       _c("h3", { staticClass: "panel-title" }, [
         _vm._v("Student Attendance View By Date")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "back-div" }, [
+      _c(
+        "a",
+        { staticClass: "btn btn-primary back-btn", attrs: { href: "" } },
+        [_vm._v("Back")]
+      )
     ])
   }
 ]
@@ -52681,11 +52806,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             semester: '',
             semester_options: [{ text: '1', value: '1' }, { text: '2', value: '2' }, { text: '3', value: '3' }, { text: '4', value: '4' }, { text: '5', value: '5' }, { text: '6', value: '6' }, { text: '7', value: '7' }, { text: '8', value: '8' }],
             section: '',
-            section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'a' }, { text: 'c', value: 'c' }]
+            section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'b' }, { text: 'c', value: 'c' }]
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStudents();
     },
@@ -53182,9 +53307,9 @@ var render = function() {
                       _vm._l(_vm.AtDates, function(AtDate) {
                         return _c("th", { key: AtDate.id }, [
                           _vm._v(
-                            "\r\n                        " +
+                            "\n                        " +
                               _vm._s(AtDate.date) +
-                              "\r\n                    "
+                              "\n                    "
                           )
                         ])
                       })
@@ -53206,11 +53331,11 @@ var render = function() {
                           _vm._l(_vm.AtDates, function(AtDate) {
                             return _c("td", { key: AtDate.id }, [
                               _vm._v(
-                                "\r\n                            " +
+                                "\n                            " +
                                   _vm._s(_vm.getAttendance(Student, AtDate)) +
                                   " / " +
                                   _vm._s(AtDate.total_hours) +
-                                  "\r\n                        "
+                                  "\n                        "
                               )
                             ])
                           })
@@ -53408,11 +53533,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             semester: '',
             semester_options: [{ text: '1', value: '1' }, { text: '2', value: '2' }, { text: '3', value: '3' }, { text: '4', value: '4' }, { text: '5', value: '5' }, { text: '6', value: '6' }, { text: '7', value: '7' }, { text: '8', value: '8' }],
             section: '',
-            section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'a' }, { text: 'c', value: 'c' }]
+            section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'b' }, { text: 'c', value: 'c' }]
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStudents();
     },
@@ -54003,7 +54128,7 @@ var content = __webpack_require__(89);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("1ae48669", content, false, {});
+var update = __webpack_require__(3)("c02875c8", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -54027,7 +54152,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.hover-text[data-v-7809b94e]{\r\n    display:none;\r\n    -webkit-transition: all ease-in .2s;\r\n    transition: all ease-in .2s;\r\n    position: absolute;\n}\n.hover-blk:hover .hover-text[data-v-7809b94e]{\r\n    display:block;\n}\r\n", ""]);
+exports.push([module.i, "\n.hover-text[data-v-7809b94e]{\n    display:none;\n    -webkit-transition: all ease-in .2s;\n    transition: all ease-in .2s;\n    position: absolute;\n}\n.hover-blk:hover .hover-text[data-v-7809b94e]{\n    display:block;\n}\n", ""]);
 
 // exports
 
@@ -54156,11 +54281,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             semester: '',
             semester_options: [{ text: '1', value: '1' }, { text: '2', value: '2' }, { text: '3', value: '3' }, { text: '4', value: '4' }, { text: '5', value: '5' }, { text: '6', value: '6' }, { text: '7', value: '7' }, { text: '8', value: '8' }],
             section: '',
-            section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'a' }, { text: 'c', value: 'c' }]
+            section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'b' }, { text: 'c', value: 'c' }]
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStudents();
         this.getAllSubjects();
@@ -54900,7 +55025,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -55158,7 +55283,7 @@ var render = function() {
           _vm.showCreateAttendance === false
             ? _c("div", { staticClass: "showNew" }, [
                 _vm._v(
-                  "\r\n\r\n                               the following staffs has Approvals please cross check with physical Entry then update this status \r\n\r\n                                "
+                  "\n\n                               the following staffs has Approvals please cross check with physical Entry then update this status \n\n                                "
                 ),
                 _c("input", {
                   directives: [
@@ -55262,9 +55387,9 @@ var render = function() {
                                   { domProps: { value: setStatuse.value } },
                                   [
                                     _vm._v(
-                                      "\r\n    " +
+                                      "\n    " +
                                         _vm._s(setStatuse.text) +
-                                        "\r\n  "
+                                        "\n  "
                                     )
                                   ]
                                 )
@@ -55442,7 +55567,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -55801,9 +55926,9 @@ var render = function() {
                                   { domProps: { value: setStatuse.value } },
                                   [
                                     _vm._v(
-                                      "\r\n                                                        " +
+                                      "\n                                                        " +
                                         _vm._s(setStatuse.text) +
-                                        "\r\n                                                    "
+                                        "\n                                                    "
                                     )
                                   ]
                                 )
@@ -55971,7 +56096,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -56365,7 +56490,7 @@ var content = __webpack_require__(103);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("f75e5f18", content, false, {});
+var update = __webpack_require__(3)("4aadc8a7", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -56467,7 +56592,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -56673,11 +56798,11 @@ var render = function() {
                           _vm._l(_vm.AtDates, function(AtDate) {
                             return _c("td", { key: AtDate.id }, [
                               _vm._v(
-                                "\r\n                            " +
+                                "\n                            " +
                                   _vm._s(
                                     _vm.getStaffAttendance(Staff, AtDate)
                                   ) +
-                                  "\r\n                        "
+                                  "\n                        "
                               )
                             ])
                           })
@@ -56786,7 +56911,7 @@ var content = __webpack_require__(108);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("fd26a88a", content, false, {});
+var update = __webpack_require__(3)("246c632e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -56879,7 +57004,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
     mounted: function mounted() {
         this.getAllStaffs();
         this.getAllAttendances();
@@ -57137,7 +57262,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
 
     methods: {
         getAllStaffs: function getAllStaffs() {
@@ -57331,17 +57456,21 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(115)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(115)
+var __vue_script__ = __webpack_require__(117)
 /* template */
-var __vue_template__ = __webpack_require__(116)
+var __vue_template__ = __webpack_require__(118)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-202b2715"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -57375,6 +57504,46 @@ module.exports = Component.exports
 
 /***/ }),
 /* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(116);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("68ce33d1", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-202b2715\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./StaffMyProfile.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-202b2715\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./StaffMyProfile.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.edit-button[data-v-202b2715]{\n    float: right;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57471,7 +57640,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getAuthuserData();
     },
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
 
     methods: {
         getAuthuserData: function getAuthuserData() {
@@ -57511,7 +57680,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57527,7 +57696,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-primary",
+              staticClass: "btn btn-primary edit-button",
               on: {
                 click: function($event) {
                   _vm.ClickEdit()
@@ -57869,15 +58038,15 @@ if (false) {
 }
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(118)
+var __vue_script__ = __webpack_require__(120)
 /* template */
-var __vue_template__ = __webpack_require__(119)
+var __vue_template__ = __webpack_require__(121)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57916,7 +58085,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57999,7 +58168,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['authenticateduser'],
+    props: ['authenticateduser', 'authrole'],
 
     methods: {
         getmyapprovals: function getmyapprovals() {
@@ -58072,7 +58241,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58300,7 +58469,7 @@ if (false) {
 }
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

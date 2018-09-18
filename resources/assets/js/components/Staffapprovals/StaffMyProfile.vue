@@ -8,7 +8,7 @@
 	</div>
 <div class="panel-body">
     <div class="row form">
-        <button class="btn btn-primary" @click="ClickEdit()">Edit Profile</button>
+        <button class="btn btn-primary edit-button" @click="ClickEdit()">Edit Profile</button>
         <div class="row">
              <div class="col-sm-6">
             <label class="">Name</label>
@@ -104,7 +104,7 @@ export default {
     mounted(){
         this.getAuthuserData();
     },
-    props:['authenticateduser'],
+         props:['authenticateduser', 'authrole'],
 
     methods:{
 
@@ -148,3 +148,10 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.edit-button{
+    float: right;
+}
+</style>

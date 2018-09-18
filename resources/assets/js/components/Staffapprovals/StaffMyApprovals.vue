@@ -81,7 +81,7 @@ export default {
         this.getmyapprovals();
     },
 
-    props:['authenticateduser'],
+         props:['authenticateduser', 'authrole'],
 
     methods:{
         getmyapprovals(){

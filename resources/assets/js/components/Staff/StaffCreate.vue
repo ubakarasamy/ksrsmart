@@ -117,7 +117,7 @@
 
             }
         },
-         props:['authenticateduser'],
+              props:['authenticateduser', 'authrole'],
         methods:{
             CreateStaff(){
                 let Formdata = {

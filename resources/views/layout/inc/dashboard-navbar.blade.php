@@ -75,11 +75,13 @@
 							class=" @if($route = Route::current()->getName() == 'home') <?php echo "active" ?> @endif"
 							><i class="lnr lnr-home"></i> <span>Dashboard</span></a>
 						</li>
+						@if(auth()->user()->GetRole() <= 3)
 						<li>
 							<a href="{{route('staffs')}}" 
 							class=" @if($route = Route::current()->getName() == 'staffs') <?php echo "active" ?> @endif"
 							><i class="lnr lnr-user"></i> <span>Staffs</span></a>
 						</li>
+						@endif
 						<li>
 							<a href="{{route('students')}}" 
 							class=" @if($route = Route::current()->getName() == 'students') <?php echo "active" ?> @endif"
@@ -88,6 +90,7 @@
 						<!-- {{-- <li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>Charts</span></a></li>
 						<li><a href="panels.html" class=""><i class="lnr lnr-cog"></i> <span>Panels</span></a></li>
 						<li><a href="notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li> --}} -->
+						@if(auth()->user()->GetRole() === 2)
 						<li>
 								<a href="#subStaffAt" data-toggle="collapse" 
 								class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance') <?php echo "active" ?> @endif"
@@ -110,21 +113,25 @@
 										</li>
 									</ul>
 						</li>
-						@if(auth()->user()->GetRole() <= 2)
+						@endif
+						@if(auth()->user()->GetRole() === 1 || auth()->user()->GetRole() === 3)
 						<li>
 							<a href="{{route('staff-approvals')}}" 
 							class=" @if($route = Route::current()->getName() == 'staff-approvals') <?php echo "active" ?> @endif"
 							><i class="lnr lnr-user"></i> <span>Staff Approvals</span></a>
 						</li>
 						@endif
+						@if(auth()->user()->GetRole() === 1 || auth()->user()->GetRole() === 3 || auth()->user()->GetRole() === 4)
 						<li>
 								<a href="#subStudAt" data-toggle="collapse" 
 								class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance') <?php echo "active" ?> @endif"
 								><i class="lnr lnr-chart-bars"></i> <span>Student Attendance</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 								<div id="subStudAt" class="collapse ">
 									<ul class="nav">
+										@if(auth()->user()->GetRole() === 1 || auth()->user()->GetRole() === 3 || auth()->user()->GetRole() === 4)
 										<li><a href="{{route('student-attendance')}}" class="">Make Attendance</a></li>
 										<li><a href="{{route('student-attendance-edit')}}" class="">Edit Attendance</a></li>
+										@endif
 										<li >
 											<a href="#subStudAtView" data-toggle="collapse" 
 											class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance') <?php echo "active" ?> @endif"
@@ -142,19 +149,23 @@
 									</ul>
 								</div>
 							</li>
+							@endif
+							@if(auth()->user()->GetRole() === 1 || auth()->user()->GetRole() === 3 || auth()->user()->GetRole() === 4)
 						<li>
 							<a href="#subSchedule" data-toggle="collapse" 
 							class="collapsed @if($route = Route::current()->getName() == 'subject-home' || $route = Route::current()->getName() == 'schedule-assign' || $route = Route::current()->getName() == 'schedule-view') <?php echo "active" ?> @endif"
 							><i class="lnr lnr-pie-chart"></i> <span>Student Schedule</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subSchedule" class="collapse ">
 								<ul class="nav">
+									@if(auth()->user()->GetRole() === 4)
 									<li><a href="{{route('subject-home')}}" class="">Add Subject</a></li>
 									<li><a href="{{route('schedule-assign')}}" class="">Assign Schedule</a></li>
+									@endif
 									<li><a href="{{route('schedule-view')}}" class="">View Schedule</a></li>
 								</ul>
 							</div>
 						</li>
-
+						@endif
 						
 						{{-- <li><a href="tables.html" class=""><i class="lnr lnr-dice"></i> <span>Tables</span></a></li>
 						<li><a href="typography.html" class=""><i class="lnr lnr-text-format"></i> <span>Typography</span></a></li>

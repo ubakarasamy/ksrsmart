@@ -137,7 +137,7 @@
 
             }
         },
-         props:['authenticateduser'],
+              props:['authenticateduser', 'authrole'],
         methods:{
             CreateStudent(){
                 let Formdata = {

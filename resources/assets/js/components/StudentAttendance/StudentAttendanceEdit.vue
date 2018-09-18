@@ -214,7 +214,7 @@ export default {
         this.getAllShedules();
         this.getAllStudents();
     },
-     props:['authenticateduser'],
+         props:['authenticateduser', 'authrole'],
     methods:{
 
 getStudentStatus(student) {

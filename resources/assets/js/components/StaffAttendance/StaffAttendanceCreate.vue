@@ -90,7 +90,7 @@ export default {
       ],
         }
     },
-     props:['authenticateduser'],
+          props:['authenticateduser', 'authrole'],
     mounted(){
         this.getAllStaffs();
     },

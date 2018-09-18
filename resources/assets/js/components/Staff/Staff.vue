@@ -4,21 +4,24 @@
     <!-- OVERVIEW -->
 <div class="panel panel-headline">
 	<div class="panel-heading">
-		<h3 class="panel-title">Staff Profile</h3>
+		<h3 class="panel-title">Staff Profiles</h3>
 
-        <a href="staff/create" class="btn btn-primary float-right">Create Student</a>
+        <a :disabled="disableAuth" href="staff/create" class="btn btn-primary float-right">Create Staff</a>
 	</div>
 	<div class="panel-body">
 		<div class="row">
 			<!-- BASIC TABLE -->
-            <div class="form-group">
+            
+            <div class="panel table-responsive" v-if="edit === false">
+
+                <div class="form-group department-select">
                 <label for="department" class="">Department</label>
-			<select v-model="w_department" class="form-control" id="department" name="department">
+			<select :disabled="disAccess" v-model="w_department" class="form-control" id="department" name="department" style="width:250px;">
             <option selected >Choose</option>
 				<option v-for="department_option in department_options" v-bind:key="department_option.value">{{department_option.text}}</option>
 			</select>
+            <br>
             </div>
-            <div class="panel table-responsive" v-if="edit === false">
 									<table class="table">
 										<thead>
 											<tr>
@@ -32,7 +35,7 @@
                                                 <td>{{Staff.eid}}</td>
 												<td>{{Staff.name}}</td>
                                                 <td>
-                                                    <button class="btn btn-primary" @click="EditClick(Staff)">
+                                                    <button :disabled="disableAuth" class="btn btn-primary" @click="EditClick(Staff)">
                                                         Edit
                                                     </button>
                                                 </td>
@@ -129,6 +132,7 @@ export default {
             Staffs:[],
             edit:false,
 
+            disAccess: false,
             w_department:'',
              name:'',
                 email:'',
@@ -166,15 +170,21 @@ export default {
                     {text:'Associate Professor', value:'associateprofessor'},
                     {text:'Lab Incharge', value:'labincharge'},
                     {text:'Non Teaching', value:'nonteaching'}
-
-                ]
+                ],
+                disableAuth:false
         }
     },
-     props:['authenticateduser'],
+          props:['authenticateduser', 'authrole'],
     mounted() {
         this.getAllStaffs();
+        this.disRole();
     },
     methods:{
+        disRole(){
+            if(this.authrole !== 3){
+                this.disableAuth = true;
+            }
+        },
         getAllStaffs(){
             fetch('/api/staffs')
             .then(res => {
@@ -238,14 +248,24 @@ export default {
     computed:{
         filteredStaffs(){
             let depart = this.w_department.toLowerCase();
-            if(depart === ""){
+
+            let w_dapart = this.authenticateduser.working_department;
+
+
+             if(this.authrole === 3 || this.authrole === 4){ //if user is hod or professor show their staffs
+                    depart = w_dapart;
+                    this.disAccess = true;
+                }
+                    
+                    if(depart === ""){
                 return this.Staffs;
             }else{
-            return this.Staffs.filter(function(staff){
-                return staff.working_department === depart;
-            });
-
+                return this.Staffs.filter(function(staff){
+                        return staff.working_department === depart;
+                    });
             }
+                
+            
         }
     }
 }
@@ -257,5 +277,8 @@ export default {
     content: "";
     clear: both;
     display: block;
+}
+.department-select{
+    padding-left: 30px;
 }
 </style>

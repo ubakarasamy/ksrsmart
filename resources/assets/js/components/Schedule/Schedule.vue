@@ -11,7 +11,7 @@
          
                      <div class="create-subjects">
                 <form @submit.prevent="CreateSubject()">
-                    <div class="row" v-if="SelectionBar === true">
+                    <div class="container" v-if="SelectionBar === true">
                     <div class="form-group col-sm-2">
                         <label for="degree" class="">Degree</label>
             <select v-model="degree" class="form-control" id="degree" name="degree">
@@ -55,7 +55,7 @@
             <p class="btn btn-primary" @click="selctionSubmit()">Submit</p>
                     </div>
                     </div>
-                    <div class="row" v-if="SelectionBar === false">
+                    <div class="container" v-if="SelectionBar === false">
                         <!-- SUBJECT LISTING -->
             <div class="subjects-listing table-responsive">
                 <table class="table">
@@ -152,7 +152,7 @@ export default {
                 ],
         }
     },
-     props:['authenticateduser'],
+     props:['authenticateduser', 'authrole'],
     mounted(){
         this.getAllSubjects()
     },

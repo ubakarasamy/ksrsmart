@@ -11,7 +11,15 @@
 	<div class="panel-body">
 		<div class="row">
 			<!-- BASIC TABLE -->
-            <div class="panel table-responsive" v-if="edit === false">
+            <div class="" v-if="edit === false">
+                <div class="form-group d-select">
+                    <label for="department" class="">Department</label>
+			<select :disabled="disAccess" v-model="Fdepartment" class="form-control" id="department" name="department">
+            <option selected disabled>Choose</option>
+				<option v-for="Fdepartment_option in Fdepartment_options" v-bind:key="Fdepartment_option.value">{{Fdepartment_option.text}}</option>
+			</select>
+                </div>  
+                <div class="table-responsive">
 									<table class="table">
 										<thead>
 											<tr>
@@ -24,7 +32,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="Stud in Studs" v-bind:key="Stud.id">
+											<tr v-for="Stud in filteredStudents" v-bind:key="Stud.id">
                                                 <td>{{Stud.reg_no}}</td>
 												<td>{{Stud.name}}</td>
 												<td>{{Stud.degree}}</td>
@@ -39,7 +47,7 @@
 											</tr>
 										</tbody>
 									</table>
-								
+								</div>
 							
 		            </div>
                     <!-- END BASIC TABLE -->
@@ -134,8 +142,17 @@ export default {
             Studs:[],
             edit:false,
 
-
-           
+            disAccess:'',
+           Fdepartment:'',
+                Fdepartment_options:[
+                    {text:'ECE', value:'ece'},
+                    {text:'EEE', value:'eee'},
+                    {text:'CSE', value:'cse'},
+                    {text:'MECH', value:'mech'},
+                    {text:'IT', value:'it'},
+                    {text:'CIVIL', value:'cicil'},
+                    {text:'AUTO', value:'auto'},
+                ],
             name:'',
                 email:'',
                 reg_no:'',
@@ -154,7 +171,7 @@ export default {
 
         }
     },
-     props:['authenticateduser'],
+          props:['authenticateduser', 'authrole'],
     mounted() {
         this.getAllStudents();
     },
@@ -220,6 +237,30 @@ export default {
                 this.edit = false;
             }
 
+    },
+    computed:{
+        filteredStudents(){
+            
+            let Students = this.Studs;
+
+            let w_dapart = this.authenticateduser.working_department;
+
+
+             if(this.authrole === 3 || this.authrole === 4){ //if user is hod or professor show their staffs
+                    this.Fdepartment = w_dapart;
+                    this.disAccess = true;
+                }
+
+                let depart = this.Fdepartment.toLowerCase();
+
+            if(depart === ""){
+                return Students;
+            }else{
+                return Students.filter(function(stud){
+                    return stud.department === depart;
+                });
+            }
+        }
     }
 }
 </script>
@@ -230,5 +271,10 @@ export default {
     content: "";
     clear: both;
     display: block;
+}
+.d-select
+{
+    margin-bottom: 30px;
+    width: 250px;
 }
 </style>

@@ -45,101 +45,102 @@ class StudentAttendanceController extends Controller
     public function storeDateandHourFirst(Request $request)
     {
         //CREATE DATE IN StudentAttendanceDate
-        $aca = Academic::find(1);
+        // $aca = Academic::find(1);
 
-        $IfDate1 = StudentAttendanceDate::where([
-            ['date', '=', $request->date],
-            ['degree', '=', $request->degree],
-            ['department', '=', $request->department],
-            ['year', '=', $request->year],
-            ['semester', '=', $request->semester],
-            ['section', '=', $request->section]
-        ])->first();
+        // $IfDate1 = StudentAttendanceDate::where([
+        //     ['date', '=', $request->date],
+        //     ['degree', '=', $request->degree],
+        //     ['department', '=', $request->department],
+        //     ['year', '=', $request->year],
+        //     ['semester', '=', $request->semester],
+        //     ['section', '=', $request->section]
+        // ])->first();
 
-        if($IfDate1 === null){
-            $CreateDate = new StudentAttendanceDate;
-            $CreateDate->degree = $request->degree;
-            $CreateDate->department = $request->department;
-            $CreateDate->year = $request->year;
-            $CreateDate->semester = $request->semester;
-            $CreateDate->section = $request->section;
-            $CreateDate->date = $request->date;
-            $CreateDate->total_hours = 1;
-            $CreateDate->semester_start = $aca->semester_start;
-            $CreateDate->save();
-        }else{
-            //do nothing
-            //return response()->json($IfDate1);
-        }
-        // CREATE HOUR IN StudentAttendanceHour
-        $IfHour = StudentAttendanceHour::where([
-            ['date', '=', $request->date],
-            ['degree', '=', $request->degree],
-            ['department', '=', $request->department],
-            ['year', '=', $request->year],
-            ['semester', '=', $request->semester],
-            ['section', '=', $request->section],
-            ['hour', '=', $request->hour]
-        ])->first();
+        // if($IfDate1 === null){
+        //     $CreateDate = new StudentAttendanceDate;
+        //     $CreateDate->degree = $request->degree;
+        //     $CreateDate->department = $request->department;
+        //     $CreateDate->year = $request->year;
+        //     $CreateDate->semester = $request->semester;
+        //     $CreateDate->section = $request->section;
+        //     $CreateDate->date = $request->date;
+        //     $CreateDate->total_hours = 0;
+        //     $CreateDate->semester_start = $aca->semester_start;
+        //     $CreateDate->save();
+        // }else{
+        //     //do nothing
+        //     //return response()->json($IfDate1);
+        // }
+        // // CREATE HOUR IN StudentAttendanceHour
+        // $IfHour = StudentAttendanceHour::where([
+        //     ['date', '=', $request->date],
+        //     ['degree', '=', $request->degree],
+        //     ['department', '=', $request->department],
+        //     ['year', '=', $request->year],
+        //     ['semester', '=', $request->semester],
+        //     ['section', '=', $request->section],
+        //     ['hour', '=', $request->hour]
+        // ])->first();
 
-        if($IfHour === null){
+        // if($IfHour === null){
 
-            $CreateHour = new StudentAttendanceHour;
-            $CreateHour->degree = $request->degree;
-            $CreateHour->department = $request->department;
-            $CreateHour->year = $request->year;
-            $CreateHour->semester = $request->semester;
-            $CreateHour->section = $request->section;
-            $CreateHour->date = $request->date;
-            $CreateHour->hour = $request->hour;
-            $CreateHour->schedule_id = $request->schedule_id;
-            $CreateHour->is_sheduled_staff = $request->is_sheduled_staff;
-            $CreateHour->alternate_staff = $request->alternate_staff;
-            $CreateHour->semester_start = $aca->semester_start;
-            $CreateHour->save();
+        //     $CreateHour = new StudentAttendanceHour;
+        //     $CreateHour->degree = $request->degree;
+        //     $CreateHour->department = $request->department;
+        //     $CreateHour->year = $request->year;
+        //     $CreateHour->semester = $request->semester;
+        //     $CreateHour->section = $request->section;
+        //     $CreateHour->date = $request->date;
+        //     $CreateHour->hour = $request->hour;
+        //     $CreateHour->schedule_id = $request->schedule_id;
+        //     $CreateHour->is_sheduled_staff = $request->is_sheduled_staff;
+        //     $CreateHour->alternate_staff = $request->alternate_staff;
+        //     $CreateHour->semester_start = $aca->semester_start;
+        //     $CreateHour->save();
 
-            if( $CreateHour->save()){
-                $IfDate2 = StudentAttendanceDate::where([
-                    ['date', '=', $request->date],
-                    ['degree', '=', $request->degree],
-                    ['department', '=', $request->department],
-                    ['year', '=', $request->year],
-                    ['semester', '=', $request->semester],
-                    ['section', '=', $request->section]
-                ])->first();
-                $IfDate2->total_hours = $IfDate2->total_hours + 1; // INCREATEMENT
-                $IfDate2->save();
-            }
+        //     if( $CreateHour->save()){
+        //         $IfDate2 = StudentAttendanceDate::where([
+        //             ['date', '=', $request->date],
+        //             ['degree', '=', $request->degree],
+        //             ['department', '=', $request->department],
+        //             ['year', '=', $request->year],
+        //             ['semester', '=', $request->semester],
+        //             ['section', '=', $request->section]
+        //         ])->first();
+        //         $IfDate2->total_hours = $IfDate2->total_hours + 1; // INCREATEMENT
+        //         $IfDate2->save();
+        //     }
             
-            // return response()->json('success');
-            $CurrentRecords = StudentAttendanceRecord::where([
-                ['date', '=', $request->date],
-                ['degree', '=', $request->degree],
-                ['department', '=', $request->department],
-                ['year', '=', $request->year],
-                ['semester', '=', $request->semester],
-                ['section', '=', $request->section],
-                ['hour', '=', $request->hour]
-            ])->get();
+        //     // return response()->json('success');
+        //     $CurrentRecords = StudentAttendanceRecord::where([
+        //         ['date', '=', $request->date],
+        //         ['degree', '=', $request->degree],
+        //         ['department', '=', $request->department],
+        //         ['year', '=', $request->year],
+        //         ['semester', '=', $request->semester],
+        //         ['section', '=', $request->section],
+        //         ['hour', '=', $request->hour]
+        //     ])->get();
 
-            return response()->json($CurrentRecords);
+        //     return response()->json($CurrentRecords);
 
-        }else{
+        // }else{
 
-            $ExtHour = StudentAttendanceHour::find($IfHour->id);
+        //     $ExtHour = StudentAttendanceHour::find($IfHour->id);
 
-            $CurrentRecords = StudentAttendanceRecord::where([
-                ['date', '=', $request->date],
-                ['degree', '=', $request->degree],
-                ['department', '=', $request->department],
-                ['year', '=', $request->year],
-                ['semester', '=', $request->semester],
-                ['section', '=', $request->section],
-                ['hour', '=', $request->hour]
-            ])->get();
+        //     $CurrentRecords = StudentAttendanceRecord::where([
+        //         ['date', '=', $request->date],
+        //         ['degree', '=', $request->degree],
+        //         ['department', '=', $request->department],
+        //         ['year', '=', $request->year],
+        //         ['semester', '=', $request->semester],
+        //         ['section', '=', $request->section],
+        //         ['hour', '=', $request->hour]
+        //     ])->get();
 
-            return response()->json($CurrentRecords);
-        }
+        //     return response()->json($CurrentRecords);
+        // }
+        return response()->json($request);
     }
 // INSERT STUDENT EACH HOUR STATUS
     public function setStudentStatusEveryHour(Request $request){

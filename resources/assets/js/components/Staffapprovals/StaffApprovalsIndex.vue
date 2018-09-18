@@ -45,7 +45,7 @@ export default {
         this.getAllStaffs();
     },
 
-    props:['authenticateduser'],
+         props:['authenticateduser', 'authrole'],
 
     methods:{
 
