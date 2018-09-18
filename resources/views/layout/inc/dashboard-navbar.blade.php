@@ -110,11 +110,13 @@
 										</li>
 									</ul>
 						</li>
+						@if(auth()->user()->GetRole() <= 2)
 						<li>
 							<a href="{{route('staff-approvals')}}" 
 							class=" @if($route = Route::current()->getName() == 'staff-approvals') <?php echo "active" ?> @endif"
 							><i class="lnr lnr-user"></i> <span>Staff Approvals</span></a>
 						</li>
+						@endif
 						<li>
 								<a href="#subStudAt" data-toggle="collapse" 
 								class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'student-attendance') <?php echo "active" ?> @endif"

@@ -237,6 +237,7 @@ export default {
                 ],
         }
     },
+     props:['authenticateduser'],
     mounted() {
         this.getAllShedules();
         this.getAllSubjects();

@@ -4,7 +4,7 @@
 @section('content')
 
 <div id="app">
-	<schedule-assign></schedule-assign>
+	<schedule-assign :authenticateduser="{{ Auth::user() }}" :authrole="{{ Auth::user()->GetRole() }}"></schedule-assign>
 </div>
 
 @endsection

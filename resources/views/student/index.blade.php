@@ -4,7 +4,7 @@
 @section('content')
 
 <div id="app">
-	<student-index></student-index>
+	<student-index :authenticateduser="{{ Auth::user() }}" :authrole="{{ Auth::user()->GetRole() }}"></student-index>
 </div>
 
 @endsection

@@ -3,7 +3,7 @@
 
 @section('content')
 <div id="app">
-<student-create></student-create>
+<student-create :authenticateduser="{{ Auth::user() }}" :authrole="{{ Auth::user()->GetRole() }}"></student-create>
 </div>
 
 

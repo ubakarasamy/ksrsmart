@@ -11,6 +11,13 @@
 	<div class="panel-body">
 		<div class="row">
 			<!-- BASIC TABLE -->
+            <div class="form-group">
+                <label for="department" class="">Department</label>
+			<select v-model="w_department" class="form-control" id="department" name="department">
+            <option selected >Choose</option>
+				<option v-for="department_option in department_options" v-bind:key="department_option.value">{{department_option.text}}</option>
+			</select>
+            </div>
             <div class="panel table-responsive" v-if="edit === false">
 									<table class="table">
 										<thead>
@@ -21,7 +28,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="Staff in Staffs" v-bind:key="Staff.id">
+											<tr v-for="Staff in filteredStaffs" v-bind:key="Staff.id">
                                                 <td>{{Staff.eid}}</td>
 												<td>{{Staff.name}}</td>
                                                 <td>
@@ -122,6 +129,7 @@ export default {
             Staffs:[],
             edit:false,
 
+            w_department:'',
              name:'',
                 email:'',
                 eid:'',
@@ -162,6 +170,7 @@ export default {
                 ]
         }
     },
+     props:['authenticateduser'],
     mounted() {
         this.getAllStaffs();
     },
@@ -225,6 +234,19 @@ export default {
                 this.edit = false;
             }
 
+    },
+    computed:{
+        filteredStaffs(){
+            let depart = this.w_department.toLowerCase();
+            if(depart === ""){
+                return this.Staffs;
+            }else{
+            return this.Staffs.filter(function(staff){
+                return staff.working_department === depart;
+            });
+
+            }
+        }
     }
 }
 </script>

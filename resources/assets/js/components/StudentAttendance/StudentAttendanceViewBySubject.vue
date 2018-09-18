@@ -148,6 +148,7 @@ export default {
                 ]
         }
     },
+     props:['authenticateduser'],
     mounted(){
         this.getAllStudents();
         this.getAllSubjects();

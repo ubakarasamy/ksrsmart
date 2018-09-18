@@ -117,6 +117,7 @@
 
             }
         },
+         props:['authenticateduser'],
         methods:{
             CreateStaff(){
                 let Formdata = {

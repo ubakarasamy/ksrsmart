@@ -4,7 +4,7 @@
 @section('content')
 
 <div id="app">
-    <home-page></home-page>
+    <home-page :authenticateduser="{{ Auth::user() }}"></home-page>
 </div>
 
 @endsection

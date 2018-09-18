@@ -55,6 +55,7 @@ export default {
            
         }
     },
+     props:['authenticateduser'],
     mounted(){
        this.getAllStaffs();
        this.getAllAttendances();

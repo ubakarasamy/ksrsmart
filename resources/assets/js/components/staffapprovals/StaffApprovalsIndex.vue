@@ -43,21 +43,13 @@ export default {
     mounted(){
         this.getAllApprovals();
         this.getAllStaffs();
-        this.zeroMessage();
     },
 
     props:['authenticateduser'],
 
-    methods:{ 
+    methods:{
 
-        zeroMessage(){
-            if(this.AllApprovals.length < 1){
-                this.Zero = 'No approvals Found!';
-            }
-            
-        },
-
-        getAllStaffs(){
+            getAllStaffs(){
             fetch('/api/staffs')
             .then(res => {
                 return res.json();
@@ -73,6 +65,9 @@ export default {
             })
             .then(data => {
                 this.AllApprovals = data;
+                 if(this.AllApprovals.length < 1){
+                this.Zero = 'No approvals Found!';
+            }
             }).catch(err => console.log(err));
         },
 
@@ -128,7 +123,9 @@ export default {
                  
             }).then(data => {
                 console.log(data);
+                this.getAllApprovals();
             }).catch(err => console.log(err));
+            this.zeroMessage();
         }
        
     },

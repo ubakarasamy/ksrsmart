@@ -4,7 +4,7 @@
 @section('content')
 
 <div id="app">
-    <student-attendance-viewbymonth></student-attendance-viewbymonth>
+    <student-attendance-viewbymonth :authenticateduser="{{ Auth::user() }}" :authrole="{{ Auth::user()->GetRole() }}"></student-attendance-viewbymonth>
 </div>
 
 @endsection

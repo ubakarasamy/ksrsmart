@@ -137,6 +137,7 @@
 
             }
         },
+         props:['authenticateduser'],
         methods:{
             CreateStudent(){
                 let Formdata = {

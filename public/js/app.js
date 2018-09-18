@@ -43605,6 +43605,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {};
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {},
 
 
@@ -43964,6 +43966,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStudents();
     },
@@ -44783,6 +44787,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+    props: ['authenticateduser'],
     methods: {
         CreateStudent: function CreateStudent() {
             var Formdata = {
@@ -45496,6 +45501,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -45503,6 +45515,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Staffs: [],
             edit: false,
 
+            w_department: '',
             name: '',
             email: '',
             eid: '',
@@ -45518,6 +45531,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             occupation_options: [{ text: 'Hod', value: 'hod' }, { text: 'Professor', value: 'professor' }, { text: 'Associate Professor', value: 'associateprofessor' }, { text: 'Lab Incharge', value: 'labincharge' }, { text: 'Non Teaching', value: 'nonteaching' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -45581,6 +45596,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         ClickBack: function ClickBack() {
             this.edit = false;
         }
+    },
+    computed: {
+        filteredStaffs: function filteredStaffs() {
+            var depart = this.w_department.toLowerCase();
+            if (depart === "") {
+                return this.Staffs;
+            } else {
+                return this.Staffs.filter(function (staff) {
+                    return staff.working_department === depart;
+                });
+            }
+        }
     }
 });
 
@@ -45598,6 +45625,53 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "panel-body" }, [
         _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "department" } }, [
+              _vm._v("Department")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.w_department,
+                    expression: "w_department"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "department", name: "department" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.w_department = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { selected: "" } }, [_vm._v("Choose")]),
+                _vm._v(" "),
+                _vm._l(_vm.department_options, function(department_option) {
+                  return _c("option", { key: department_option.value }, [
+                    _vm._v(_vm._s(department_option.text))
+                  ])
+                })
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
           _vm.edit === false
             ? _c("div", { staticClass: "panel table-responsive" }, [
                 _c("table", { staticClass: "table" }, [
@@ -45605,7 +45679,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.Staffs, function(Staff) {
+                    _vm._l(_vm.filteredStaffs, function(Staff) {
                       return _c("tr", { key: Staff.id }, [
                         _c("td", [_vm._v(_vm._s(Staff.eid))]),
                         _vm._v(" "),
@@ -46284,6 +46358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+    props: ['authenticateduser'],
     methods: {
         CreateStaff: function CreateStaff() {
             var Formdata = {
@@ -46895,6 +46970,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'b' }, { text: 'c', value: 'c' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllSubjects();
     },
@@ -47730,6 +47807,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'b' }, { text: 'c', value: 'c' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllShedules();
         this.getAllSubjects();
@@ -48772,6 +48851,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'b' }, { text: 'c', value: 'c' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllShedules();
         this.getAllSubjects();
@@ -49618,8 +49699,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var hour = this.hour;
             if (degree !== "" && department !== "" && year !== "" && semester !== "" && section !== "" && day !== "" && hour !== "") {
                 this.schedule_id = this.filterSchedules[0].id;
-                console.log(this.authenticateduser.id);
-                console.log(this.filterSchedules[0].staff_id);
+                // console.log(this.authenticateduser.id);
+                // console.log(this.filterSchedules[0].staff_id);
 
                 if (this.authenticateduser.id !== this.filterSchedules[0].staff_id) {
                     this.is_sheduled_staff = false;
@@ -51693,6 +51774,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'b' }, { text: 'c', value: 'c' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStudents();
         this.getAllShedules();
@@ -52601,6 +52684,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'a' }, { text: 'c', value: 'c' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStudents();
     },
@@ -53326,6 +53411,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'a' }, { text: 'c', value: 'c' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStudents();
     },
@@ -54072,6 +54159,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             section_options: [{ text: 'a', value: 'a' }, { text: 'b', value: 'a' }, { text: 'c', value: 'c' }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStudents();
         this.getAllSubjects();
@@ -54810,6 +54899,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             setStatuses: [{ text: "Not Updated", value: "null" }, { text: "Present", value: "present" }, { text: "CL", value: "cl" }, { text: "CPL", value: "cpl" }, { text: "Present-Permission", value: "present-permission" }, { text: "Present-Late", value: "present-late" }, { text: "OD", value: "od" }, { text: "SOD", value: "sod" }, { text: "Absent", value: "absent" }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -55350,6 +55441,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             setStatuses: [{ text: "Not Updated", value: "null" }, { text: "Present", value: "present" }, { text: "CL", value: "cl" }, { text: "CPL", value: "cpl" }, { text: "Present-Permission", value: "present-permission" }, { text: "Present-Late", value: "present-late" }, { text: "OD", value: "od" }, { text: "SOD", value: "sod" }, { text: "Absent", value: "absent" }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -55877,6 +55970,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             setStatuses: [{ text: "Not Updated", value: "null" }, { text: "Present", value: "present" }, { text: "CL", value: "cl" }, { text: "CPL", value: "cpl" }, { text: "Present-Permission", value: "present-permission" }, { text: "Present-Late", value: "present-late" }, { text: "OD", value: "od" }, { text: "SOD", value: "sod" }, { text: "Absent", value: "absent" }]
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -56294,7 +56389,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -56371,6 +56466,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStaffs();
     },
@@ -56713,7 +56810,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -56781,6 +56878,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         };
     },
+
+    props: ['authenticateduser'],
     mounted: function mounted() {
         this.getAllStaffs();
         this.getAllAttendances();
@@ -57035,18 +57134,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         this.getAllApprovals();
         this.getAllStaffs();
-        this.zeroMessage();
     },
 
 
     props: ['authenticateduser'],
 
     methods: {
-        zeroMessage: function zeroMessage() {
-            if (this.AllApprovals.length < 1) {
-                this.Zero = 'No approvals Found!';
-            }
-        },
         getAllStaffs: function getAllStaffs() {
             var _this = this;
 
@@ -57065,6 +57158,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return res.json();
             }).then(function (data) {
                 _this2.AllApprovals = data;
+                if (_this2.AllApprovals.length < 1) {
+                    _this2.Zero = 'No approvals Found!';
+                }
             }).catch(function (err) {
                 return console.log(err);
             });
@@ -57102,6 +57198,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         updateApproval: function updateApproval(stat, a_id) {
+            var _this3 = this;
+
             var Formdata = {
                 approval_id: a_id,
                 approved_by: this.authenticateduser.id,
@@ -57117,9 +57215,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return res.json();
             }).then(function (data) {
                 console.log(data);
+                _this3.getAllApprovals();
             }).catch(function (err) {
                 return console.log(err);
             });
+            this.zeroMessage();
         }
     },
 

@@ -257,8 +257,8 @@ getStudentStatus(student) {
         let hour = this.hour;
             if(degree !== "" && department !== "" && year !== "" && semester !== "" && section !== "" && day !== "" && hour !== ""){
                 this.schedule_id = this.filterSchedules[0].id;
-console.log(this.authenticateduser.id);
-console.log(this.filterSchedules[0].staff_id);
+// console.log(this.authenticateduser.id);
+// console.log(this.filterSchedules[0].staff_id);
 
                 if(this.authenticateduser.id !== this.filterSchedules[0].staff_id){
                     this.is_sheduled_staff = false;

@@ -40,7 +40,7 @@ export default {
 
         }
     },
-
+	 props:['authenticateduser'],
     mounted(){
 
     },

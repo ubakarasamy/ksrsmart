@@ -152,6 +152,7 @@ export default {
                 ],
         }
     },
+     props:['authenticateduser'],
     mounted(){
         this.getAllSubjects()
     },

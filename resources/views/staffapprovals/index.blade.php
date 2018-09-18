@@ -3,7 +3,7 @@
 
 @section('content')
 <div id="app">
-<staff-approvals-index :authenticateduser="{{ Auth::user() }}" ></staff-approvals-index>
+<staff-approvals-index :authenticateduser="{{ Auth::user() }}" :authrole="{{ Auth::user()->GetRole() }}"></staff-approvals-index>
 </div>
 
 
