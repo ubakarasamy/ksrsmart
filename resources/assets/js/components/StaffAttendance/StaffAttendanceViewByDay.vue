@@ -31,12 +31,12 @@
 
                                 <input type="text" class="form-control col-md-4 mb-3" style="text-transform:uppercase;margin-botom:20px;" placeholder="Search with Employee Id" v-model="search">
                                 <table class="table">
-                                   <thead>
+                                   <tbody>
+                                       <tr>
                                        <th>#EID</th>
                                        <th>Name</th>
                                        <th>Status</th>
-                                   </thead>
-                                   <tbody>
+                                   </tr>
                                        <tr v-for="Staff in searchStaffs" v-bind:key="Staff.id">
                                            <td>{{ Staff.eid }}</td>
                                            <td>{{ Staff.name }}</td>
@@ -45,6 +45,7 @@
                                        </tr>
                                    </tbody>
                                 </table>
+                                <button class="btn btn-primary" @click="getCsv()">download</button>
                            </div>
 		</div>
 	</div>
@@ -83,6 +84,14 @@ export default {
         this.getAllStaffs();
     },
     methods:{
+ getCsv(){
+            var html = document.querySelector("table").outerHTML;
+    this.export_table_to_csv(html, `
+    Staff-Attendance-${this.makedate}
+    `
+    );
+        },
+
         getStaffStatus(staff) {
       var status;
       var aData;
@@ -201,7 +210,49 @@ export default {
                     
                 });
                 this.getAllAttendances();
-        }
+        },
+        download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // We have to create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Make sure that the link is not displayed
+    downloadLink.style.display = "none";
+
+    // Add the link to your DOM
+    document.body.appendChild(downloadLink);
+
+    // Lanzamos
+    downloadLink.click();
+},
+
+export_table_to_csv(html, filename) {
+	var csv = [];
+	var rows = document.querySelectorAll("table tr");
+	
+    for (var i = 0; i < rows.length; i++) {
+		var row = [], cols = rows[i].querySelectorAll("td, th");
+		
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+		csv.push(row.join(","));		
+	}
+
+    // Download CSV
+    this.download_csv(csv.join("\n"), filename);
+}
     },
     computed:{
         searchStaffs: function() {

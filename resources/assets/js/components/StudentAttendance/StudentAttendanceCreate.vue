@@ -12,7 +12,7 @@
             <form @submit.prevent="createDateandHour()">
             <div class="col-sm-2">
                 <label for="degree" class="">Degree</label>
-            <select required="true" v-model="degree" class="form-control" id="degree" name="degree">
+            <select :disabled="disAccess" required="true" v-model="degree" class="form-control" id="degree" name="degree">
                 <option selected >Choose</option>
 				<option v-for="degree_option in degree_options" v-bind:key="degree_option.value">{{degree_option.text}}</option>
 			</select>
@@ -21,7 +21,7 @@
             
             <div class="col-sm-2">
                 <label for="department" class="">Department</label>
-			<select required="true" v-model="department" class="form-control" id="department" name="department">
+			<select :disabled="disAccess" required="true" v-model="department" class="form-control" id="department" name="department">
             <option selected >Choose</option>
 				<option v-for="department_option in department_options" v-bind:key="department_option.value">{{department_option.text}}</option>
 			</select>
@@ -93,7 +93,7 @@
 
 <a class="btn btn-primary back-btn" href="">Back</a>
 
-                <button @click="createAllStudentHour()" class="btn btn-primary">All present</button>
+                <button @click="createAllStudentHour()" class="btn btn-primary btn-allpresent">All present</button>
 
                 <table class="table">
                     <thead>
@@ -141,9 +141,11 @@ export default {
             student_attendance_id:'',
             is_sheduled_staff:'',
             alternate_staff:'',
-
+            disAccess:'',
             Attendances:[],
             
+            bachlers_departments:["ece","eee","mech","cse","it","civil","automobile"],
+            masters_departments:["me-cse","me-cem","me-est","me-ise","me-ped","me-se","me-vlsi","mtech-it","mba"],
             Sstatus:'',
             atStatuses:[
                 {text:'Present', value:'present'},
@@ -214,7 +216,7 @@ export default {
         this.getAllShedules();
         this.getAllStudents();
     },
-     props:['authenticateduser'],
+     props:['authenticateduser', 'authrole'],
     methods:{
 
 getStudentStatus(student) {
@@ -383,14 +385,6 @@ this.Attendances = data;
                     
                 });
         },
-
-
-
-
-
-
-
-        
         
     },
 
@@ -424,6 +418,21 @@ this.Attendances = data;
     },
 
     filteredStudents(){
+
+        let w_dapart = this.authenticateduser.working_department;
+
+
+             if(this.authrole === 3 || this.authrole === 4){ //if user is hod or professor show their staffs
+                    this.department = w_dapart;
+                    this.disAccess = true;
+
+                    if(this.bachlers_departments.includes(w_dapart)){
+                        this.degree = 'be';
+                    }else if(this.masters_departments.includes(w_dapart)){
+                        this.degree = 'me';
+                    }
+                }
+
  
         let vm = this;
         let department = vm.department.toLowerCase();
@@ -448,3 +457,10 @@ this.Attendances = data;
     }
 }
 </script>
+
+<style scoped>
+.btn-allpresent
+{
+    float: right;
+}
+</style>

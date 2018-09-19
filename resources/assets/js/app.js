@@ -46,6 +46,7 @@ Vue.component('staff-approvals-index', require('./components/Staffapprovals/Staf
 Vue.component('staff-myprofile', require('./components/Staffapprovals/StaffMyProfile.vue'));
 Vue.component('staff-approvals-show', require('./components/Staffapprovals/StaffMyApprovals.vue'));
 
+Vue.component('academic-page', require('./components/Academic/Index.vue'));
 
 
 const app = new Vue({

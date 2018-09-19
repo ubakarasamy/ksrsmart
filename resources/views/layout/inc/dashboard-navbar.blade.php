@@ -75,6 +75,13 @@
 							class=" @if($route = Route::current()->getName() == 'home') <?php echo "active" ?> @endif"
 							><i class="lnr lnr-home"></i> <span>Dashboard</span></a>
 						</li>
+						@if(auth()->user()->GetRole() === 1)
+						<li>
+							<a href="{{route('update-semester')}}" 
+							class=" @if($route = Route::current()->getName() == 'update-semester') <?php echo "active" ?> @endif"
+							><i class="lnr lnr-user"></i> <span>Academic Updates</span></a>
+						</li>
+						@endif
 						@if(auth()->user()->GetRole() <= 3)
 						<li>
 							<a href="{{route('staffs')}}" 

@@ -71,14 +71,14 @@
     <div class="row" v-if="hideForm === false">
         <div class="table-responsive">
             <table class="table">
-                <thead>
-                    <th>Student REG No</th>
+                <tbody>
+                    <tr>
+                    <th>REG No</th>
                     <th>Name</th>
                     <th v-for="AtDate in AtDates" v-bind:key="AtDate.id">
                         {{AtDate.date}}
                     </th>
-                </thead>
-                <tbody>
+                </tr>
                     <tr v-for="Student in filteredStudents" v-bind:key="Student.id">
                         <td>{{Student.reg_no}}</td>
                         <td>{{Student.name}}</td>
@@ -88,6 +88,7 @@
                     </tr>
                 </tbody>
             </table>
+            <button class="btn btn-primary" @click="getCsv()">download</button>
         </div>
     </div>
 </div>
@@ -154,7 +155,13 @@ export default {
         this.getAllStudents();
     },
     methods:{
-
+        getCsv(){
+            var html = document.querySelector("table").outerHTML;
+    this.export_table_to_csv(html, `
+    ${this.degree}-${this.department}-${this.year}-${this.section}
+    `
+    );
+        },
         getAttendance(Student,AtDate){
             var status = [];
             var aData;
@@ -213,7 +220,49 @@ export default {
                 }).catch(err => {
                     
                 });
-        }
+        },
+         download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // We have to create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Make sure that the link is not displayed
+    downloadLink.style.display = "none";
+
+    // Add the link to your DOM
+    document.body.appendChild(downloadLink);
+
+    // Lanzamos
+    downloadLink.click();
+},
+
+export_table_to_csv(html, filename) {
+	var csv = [];
+	var rows = document.querySelectorAll("table tr");
+	
+    for (var i = 0; i < rows.length; i++) {
+		var row = [], cols = rows[i].querySelectorAll("td, th");
+		
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+		csv.push(row.join(","));		
+	}
+
+    // Download CSV
+    this.download_csv(csv.join("\n"), filename);
+}
     },
 
     computed:{

@@ -111,3 +111,9 @@ Route::get('staff/approval/getallapprovals', 'StaffApprovalController@getAllAppr
 Route::delete('staff/approval/removemyapprovals', 'StaffApprovalController@destroy');
 
 Route::put('staff/approval/getmyapprovals', 'StaffApprovalController@updateApproval');
+
+
+Route::get('fetchsemester', 'AcademicController@fetchSemester');
+Route::post('academicyear', 'AcademicController@postAcademic');
+// Update Semester
+Route::post('semester', 'AcademicController@closeSemester');

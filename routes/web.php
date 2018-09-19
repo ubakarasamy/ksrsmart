@@ -58,6 +58,7 @@ Route::get('/staff/approval/main', 'StaffApprovalController@main')->name('staff-
 
 Route::get('/staff/approval', 'StaffApprovalController@show')->name('my-approvals');
 
+Route::get('/update/semester', 'AcademicController@index')->name('update-semester');
 
 Route::get('test', 'StudentController@test');
 
