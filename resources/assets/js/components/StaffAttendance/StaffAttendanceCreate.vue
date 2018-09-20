@@ -29,9 +29,12 @@
  
                            <div class="showNew" v-if="showCreateAttendance === false">
 
-                               the following staffs has Approvals please cross check with physical Entry then update this status 
+                               <!-- the following staffs has Approvals please cross check with physical Entry then update this status  -->
 
-                                <input type="text" class="form-control col-md-4 mb-3" style="text-transform:uppercase;margin-botom:20px;" placeholder="Search with Employee Id" v-model="search">
+
+
+
+                                <input type="text" class="form-control col-md-4 m-b-3" style="text-transform:uppercase;margin-botom:20px;" placeholder="Search with Employee Id" v-model="search">
                                 <button class="btn btn-primary float-right" @click="setAllStaffAt()">Make all Present</button>
                                 <table class="table">
                                    <thead>
@@ -230,3 +233,11 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.m-b-3{
+    margin-bottom: 30px;
+    width: 250px;
+}
+</style>

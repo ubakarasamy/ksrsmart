@@ -4,7 +4,7 @@
 <!-- OVERVIEW -->
 <div class="panel panel-headline">
 	<div class="panel-heading">
-		<h3 class="panel-title">Student Attendance View By Subject </h3>
+		<h3 class="panel-title">Student Attendance For Subject {{Subject_selected}}</h3>
 	</div>
 	<div class="panel-body">
         <div class="row" v-if="hideForm">
@@ -382,5 +382,9 @@ export_table_to_csv(html, filename) {
 
 .hover-blk:hover .hover-text{
     display:block;
+}
+.back-btn
+{
+    margin-bottom: 30px;
 }
 </style>

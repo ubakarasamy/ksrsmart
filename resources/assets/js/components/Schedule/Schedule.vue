@@ -55,9 +55,12 @@
             <p class="btn btn-primary" @click="selctionSubmit()">Submit</p>
                     </div>
                     </div>
-                    <div class="container" v-if="SelectionBar === false">
+                    <div class="selectionBar" v-if="SelectionBar === false">
+                       
+
                         <!-- SUBJECT LISTING -->
             <div class="subjects-listing table-responsive">
+                 <div class="table-subs">
                 <table class="table">
 										<thead>
 											<tr>
@@ -76,9 +79,10 @@
 											</tr>
 										</tbody>
 									</table>
+                 </div>
             </div>
             <!-- SUBJECT LISTING -->
-                    <div class="row">
+                    
                         <h3>Create subject</h3>
                     <label for="subject_name" class="">Subject Name</label>
                     <input required="true" v-model="subject_name" type="text" class="form-control" placeholder="Subject Name" id="subject_name" name="subject_name">
@@ -91,7 +95,7 @@
                     <br>
                     <button type="submit" class="btn btn-primary">Create</button>
                     </div>
-                      </div>
+                   
                 </form>
             </div>
 		</div>
