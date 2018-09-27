@@ -10,11 +10,7 @@ use App\Academic;
 
 class AcademicController extends Controller
 {
-    public function index(){
-        return view('academic.index');
-    }
-
-
+    
 
         /*
      * /increase Semester and Year of student
@@ -24,20 +20,12 @@ class AcademicController extends Controller
         $students = Student::where('status', 'current')->get();
         
             $aca = Academic::findOrFail(1);
-            switch ($aca->academic_semester) {
-                case 'odd':
-                    $aca->academic_semester = 'even'; 
-                    break;
-                case 'even':
-                    $aca->academic_semester = 'odd';
-                break; 
-            }
             $aca->semester_start = $request->semStart;
             $aca->save();
         foreach($students as $student){
         
         if($student->degree === 'be'){
-        if($student->semester < 8 && $student->semester == 2 || $student->semester == 4 || $student->semester == 6){
+        if($student->semester < 8 && $student->semester === 2 || $student->semester === 4 || $student->semester === 6){
             //increase Semester and Year
             $student->semester = $student->semester + 1;
             $student->year = $student->year + 1;
@@ -45,13 +33,13 @@ class AcademicController extends Controller
         }elseif($student->semester < 8){
             //increase semester
             $student->semester = $student->semester + 1;
-        }elseif($student->semester == 8){
+        }elseif($student->semester === 8){
             $student->status = 'passed-out';
         }
             $student->save();
      
         }else if($student->degree === 'me'){
-            if($student->semester < 4 && $student->semester == 2){
+            if($student->semester < 4 && $student->semester === 2){
                 //increase Semester and Year
                 $student->semester = $student->semester + 1;
                 $student->year = $student->year + 1;
@@ -59,7 +47,7 @@ class AcademicController extends Controller
             }elseif($student->semester < 4){
                 //increase semester
                 $student->semester = $student->semester + 1;
-            }elseif($student->semester == 4){
+            }elseif($student->semester === 4){
                 $student->status = 'passed-out';
             }
                 $student->save();

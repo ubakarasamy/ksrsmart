@@ -12,25 +12,8 @@ use App\Role;
 class StaffController extends Controller
 {
 
-    public function MyProfile(){
-        return view('staff.myprofile');
-    }
- 
-    public function index()
-    {
-        return view('staff.index');
-    }
+    
 
-
-    public function create()
-    {
-        return view('staff.create');
-    }
-
-    public function edit(Request $request)
-    {
-        return view('staff.edit');
-    }
 
     public function showAll(Request $request)
     {

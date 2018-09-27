@@ -8,34 +8,29 @@ use App\User;
 use App\Academic;
 use App\StaffAttendanceDate;
 use App\StaffAttendanceRecord;
+use App\StaffApproval;
 
 class StaffAttendanceController extends Controller
 {
     
-    public function index(){
-        return view('staffattendance.make');
-    }
-
-    public function EditAt()
-    {
-        return view('staffattendance.edit');
-    }
-
-    public function viewByDay(){
-        return view('staffattendance.viewbyday');
-    }
-    public function viewByMonth(){
-        return view('staffattendance.viewbymonth');
-    }
-    public function viewByOverall(){
-        return view('staffattendance.viewbyoverall');
-    }
-    
-
     public function getAllatbydate(Request $request){
         $date = $request->makedate;
+        $aca = Academic::find(1);
         $records = StaffAttendanceRecord::where('date', $date)->get();
-        return response()->json($records);
+
+        $Approvals = StaffApproval::where([
+            ['year_start', '=', $aca->year_start],
+            ['approved_by', '=', 1],
+            ['date', '=', $date]
+        ])->get();
+
+        foreach ($Approvals as $Approval) {
+            $user = User::find($Approval->staff_id);
+            $Approval->staff_eid = $user->eid;
+            $Approval->staff_name = $user->name;
+        }
+
+        return response()->json(['records' => $records, 'approvals' => $Approvals]);
     }
 
     public function getAttendancesbydates(Request $request){

@@ -16,20 +16,12 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('student.index');
-    }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('student.create');
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -94,10 +86,7 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
-    {
-        return view('student.edit');
-    }
+    
 
     /**
      * Update the specified resource in storage.

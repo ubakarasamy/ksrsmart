@@ -19,7 +19,7 @@
                                        </div>
                                        <div class="form-group col-md-4">
                                             <label for="eid">Employee ID</label>
-                                            <input type="text" style="width: 200px;" id="eid" v-model="eid" name="eid" class="form-control">
+                                            <input disabled="true" type="text" style="width: 200px;" id="eid" v-model="eid" name="eid" class="form-control">
                                             <p class="text-muted">Enter Your Employee Id</p>
                                        </div>
                                </div>
@@ -29,10 +29,26 @@
  
                            <div class="showNew" v-if="showCreateAttendance === false">
 
-                               <!-- the following staffs has Approvals please cross check with physical Entry then update this status  -->
+                               <div class="showapprovals" v-if="Approvals.length > 0">
+                                   <h3>The following staffs has Approvals </h3> 
 
-
-
+                                <table class="table">
+                                    <thead>
+                                        <th>EID</th>
+                                        <th>Name</th>
+                                        <th>Approval For</th>
+                                        <th>Status</th>
+                                    </thead>
+                                    <tr v-for="Approval in Approvals" v-bind:key="Approval.id">
+                                        <td>{{Approval.staff_eid}}</td>
+                                        <td>{{Approval.staff_name}}</td>
+                                        <td>{{Approval.approval_for}}</td>
+                                        <td>{{Approval.status}}</td>
+                                    </tr>
+                                </table>
+                               </div>
+                              
+                         
 
                                 <input type="text" class="form-control col-md-4 m-b-3" style="text-transform:uppercase;margin-botom:20px;" placeholder="Search with Employee Id" v-model="search">
                                 <button class="btn btn-primary float-right" @click="setAllStaffAt()">Make all Present</button>
@@ -78,6 +94,7 @@ export default {
             Staffs:[],
             search:'',
             Attendances:[],
+            Approvals:[],
             
         StatusSelected:'',
             setStatuses: [
@@ -96,8 +113,12 @@ export default {
           props:['authenticateduser', 'authrole'],
     mounted(){
         this.getAllStaffs();
+        this.setEid();
     },
     methods:{
+        setEid(){
+            this.eid = this.authenticateduser.eid;
+        },
         getStaffStatus(staff) {
       var status;
       var aData;
@@ -160,10 +181,10 @@ export default {
                     return response.json();
                 }).then(data => {
                     console.log(data);
-                    this.Attendances = data;
-
+                    this.Attendances = data['records'];
+                    this.Approvals = data['approvals'];
                 }).catch(err => {
-                    
+                    console.log(er);
                 });
         },
         makAtforStaff(Staff){

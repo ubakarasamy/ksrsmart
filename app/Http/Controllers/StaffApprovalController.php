@@ -13,17 +13,7 @@ class StaffApprovalController extends Controller
 {
 
 
-    public function main(){
-        return view('staffapprovals.index');
-    }
-
-    public function show(){
-        return view('staffapprovals.show');
-    }
-
-    public function Admin(){
-        return view('staffapprovals.adminview');
-    }
+    
 
     public function getAllApprovals(){
         $aca = Academic::find(1);

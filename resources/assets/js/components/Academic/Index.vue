@@ -20,7 +20,7 @@
 <form @submit.prevent="submitAcademic">
 <label class="text-dark pt-3">Academic Year Start</label> 
 <input :required="true" type="date" v-model="academicYear" id="date" name="date" class="form-control" style="width:200px;">
-<em><strong>Current Year Started</strong> {{gotData.year_start}}</em>
+<em>Current Year Started<font style="color:#3f51b5;">{{gotData.year_start}}</font></em>
 
 <br><br>
 <h3 class="pt-3 pb-2">Enter Staff Leave Limits</h3>

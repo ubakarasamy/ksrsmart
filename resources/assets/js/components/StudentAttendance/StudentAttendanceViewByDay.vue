@@ -14,8 +14,7 @@
 		<div class="row">
                <div class="col-sm-2">
                 <label for="degree" class="">Degree</label>
-            <select required="true" v-model="degree" class="form-control" id="degree" name="degree">
-                <option selected >Choose</option>
+            <select :disabled="disAccess" required="true" v-model="degree" class="form-control" id="degree" name="degree">
 				<option v-for="degree_option in degree_options" v-bind:key="degree_option.value">{{degree_option.text}}</option>
 			</select>
             <br>
@@ -23,8 +22,7 @@
             
             <div class="col-sm-2">
                 <label for="department" class="">Department</label>
-			<select required="true" v-model="department" class="form-control" id="department" name="department">
-            <option selected >Choose</option>
+			<select :disabled="disAccess" required="true" v-model="department" class="form-control" id="department" name="department">
 				<option v-for="department_option in department_options" v-bind:key="department_option.value">{{department_option.text}}</option>
 			</select>
             <br>
@@ -33,7 +31,6 @@
             <div class="col-sm-2">
                 <label for="year" class="">Year</label>
 			<select required="true" v-model="year" class="form-control" id="year" name="year">
-            <option selected >Choose</option>
 				<option v-for="year_option in year_options" v-bind:key="year_option.value">{{year_option.text}}</option>
 			</select>
             <br>
@@ -42,7 +39,6 @@
             <div class="col-sm-2">
                 <label for="semester" class="">Semester</label>
 			<select required="true" v-model="semester" class="form-control" id="semester" name="semester">
-            <option selected >Choose</option>
 				<option v-for="semester_option in semester_options" v-bind:key="semester_option.value">{{semester_option.text}}</option>
 			</select>
             <br>
@@ -51,7 +47,6 @@
             <div class="col-sm-2">
                 <label for="section" class="">Section</label>
 			<select required="true" v-model="section" class="form-control" id="section" name="section">
-            <option selected >Choose</option>
 				<option v-for="section_option in section_options" v-bind:key="section_option.value">{{section_option.text}}</option>
 			</select>
             <br>
@@ -152,6 +147,8 @@ export default {
             AtHours:[],
             hideForm:true,
             date:'',
+            bachlers_departments:["ece","eee","mech","cse","it","civil","automobile"],
+            masters_departments:["me-cse","me-cem","me-est","me-ise","me-ped","me-se","me-vlsi","mtech-it","mba"],
             degree:'',
                 degree_options:[
                     {text:'BE', value:'be'},
@@ -197,9 +194,22 @@ export default {
     mounted(){
         this.getAllStudents();
         this.getAllShedules();
+        this.hodandStaffRole();
     },
     methods:{
+        hodandStaffRole(){
+        let w_dapart = this.authenticateduser.working_department;
+        if(this.authrole === 3 || this.authrole === 4){ //if user is hod or professor show their staffs
+                    this.department = w_dapart.toUpperCase();
+                    this.disAccess = true;
 
+                    if(this.bachlers_departments.includes(w_dapart)){
+                        this.degree = 'BE';
+                    }else if(this.masters_departments.includes(w_dapart)){
+                        this.degree = 'ME';
+                    }
+                }
+    },
         getAttendance(Student,AtHour){
             var status = [];
             var aData;

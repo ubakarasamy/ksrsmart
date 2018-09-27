@@ -107,7 +107,7 @@
                     {text:'MECH', value:'mech'},
                     {text:'IT', value:'it'},
                     {text:'CIVIL', value:'cicil'},
-                    {text:'AUTO', value:'auto'},
+                    {text:'AUTO', value:'auto'}
                 ],
                 year:'',
                 year_options:[

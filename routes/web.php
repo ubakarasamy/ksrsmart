@@ -18,47 +18,49 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 //Students
-Route::get('/students', 'StudentController@index')->name('students');
-Route::get('/student/create', 'StudentController@create')->name('student.create');
+Route::get('/students', 'HomeController@studentsIndex')->name('students');
+Route::get('/student/create', 'HomeController@Studentcreate')->name('student.create');
 
 //Students
-Route::get('/staffs', 'StaffController@index')->name('staffs');
-Route::get('/staff/create', 'StaffController@create')->name('staff.create');
+Route::get('/staffs', 'HomeController@Staffindex')->name('staffs');
+Route::get('/staff/create', 'HomeController@Staffcreate')->name('staff.create');
 
 
 
 //Schedule
-Route::get('/subject', 'Schedule\ScheduleController@index')->name('subject-home');
-Route::get('/schedule', 'Schedule\ScheduleController@assignShedule')->name('schedule-assign');
-Route::get('/schedule/view', 'Schedule\ScheduleController@view')->name('schedule-view');
+Route::get('/subject', 'HomeController@Scheduleindex')->name('subject-home');
+Route::get('/schedule', 'HomeController@ScheduleassignShedule')->name('schedule-assign');
+Route::get('/schedule/view', 'HomeController@Scheduleview')->name('schedule-view');
 
 
-//student
-Route::get('/student/attendance/make', 'StudentAttendanceController@index')->name('student-attendance');
-Route::get('/student/attendance/edit', 'StudentAttendanceController@EditAt')->name('student-attendance-edit');
+//student attendance
+Route::get('/student/attendance/make', 'HomeController@StudentAttendanceindex')->name('student-attendance');
+Route::get('/student/attendance/edit', 'HomeController@StudentAttendanceEditAt')->name('student-attendance-edit');
 
-Route::get('/student/attendance/view/day', 'StudentAttendanceController@viewByDay')->name('student-attendance-view-day');
-Route::get('/student/attendance/view/month', 'StudentAttendanceController@viewByMonth')->name('student-attendance-view-month');
-Route::get('/student/attendance/view/overall', 'StudentAttendanceController@viewByOverall')->name('student-attendance-view-overall');
-Route::get('/student/attendance/view/subject', 'StudentAttendanceController@viewBySubject')->name('student-attendance-view-subject');
+Route::get('/student/attendance/view/day', 'HomeController@StudentAttendanceviewByDay')->name('student-attendance-view-day');
+Route::get('/student/attendance/view/month', 'HomeController@StudentAttendanceviewByMonth')->name('student-attendance-view-month');
+Route::get('/student/attendance/view/overall', 'HomeController@StudentAttendanceviewByOverall')->name('student-attendance-view-overall');
+Route::get('/student/attendance/view/subject', 'HomeController@StudentAttendanceviewBySubject')->name('student-attendance-view-subject');
 
-//staff
-Route::get('/staff/attendance/make', 'StaffAttendanceController@index')->name('staff-attendance');
-Route::get('/staff/attendance/edit', 'StaffAttendanceController@EditAt')->name('staff-attendance-edit');
+//staffattendance
+Route::get('/staff/attendance/make', 'HomeController@StaffAttendanceindex')->name('staff-attendance');
+Route::get('/staff/attendance/edit', 'HomeController@StaffAttendanceEditAt')->name('staff-attendance-edit');
 
-Route::get('/staff/attendance/view/day', 'StaffAttendanceController@viewByDay')->name('staff-attendance-view-day');
-Route::get('/staff/attendance/view/month', 'StaffAttendanceController@viewByMonth')->name('staff-attendance-view-month');
-Route::get('/staff/attendance/view/overall', 'StaffAttendanceController@viewByOverall')->name('staff-attendance-view-overall');
+Route::get('/staff/attendance/view/day', 'HomeController@StaffAttendanceviewByDay')->name('staff-attendance-view-day');
+Route::get('/staff/attendance/view/month', 'HomeController@StaffAttendanceviewByMonth')->name('staff-attendance-view-month');
+Route::get('/staff/attendance/view/overall', 'HomeController@StaffAttendanceviewByOverall')->name('staff-attendance-view-overall');
 
+//staffprofile
+Route::get('/staff/profile', 'HomeController@StaffMyProfile')->name('my-profile');
 
-Route::get('/staff/profile', 'StaffController@MyProfile')->name('my-profile');
+//staffapprovals
+Route::get('/staff/approval/main', 'HomeController@StaffApprovalmain')->name('staff-approvals');
 
+//staffmyapproval
+Route::get('/staff/approval', 'HomeController@StaffApprovalshow')->name('my-approvals');
 
-Route::get('/staff/approval/main', 'StaffApprovalController@main')->name('staff-approvals');
-
-Route::get('/staff/approval', 'StaffApprovalController@show')->name('my-approvals');
-
-Route::get('/update/semester', 'AcademicController@index')->name('update-semester');
+//update semester confidential
+Route::get('/update/semester', 'HomeController@Academicindex')->name('update-semester');
 
 Route::get('test', 'StudentController@test');
 

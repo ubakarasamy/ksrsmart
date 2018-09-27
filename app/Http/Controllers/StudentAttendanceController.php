@@ -19,27 +19,6 @@ use App\StudentAttendanceRecord;
 class StudentAttendanceController extends Controller
 {
   
-    public function index()
-    {
-        return view('studentattendance.make');
-    }
-    public function EditAt()
-    {
-        return view('studentattendance.edit');
-    }
-    
-    public function viewByDay(){
-        return view('studentattendance.viewbyday');
-    }
-    public function viewByMonth(){
-        return view('studentattendance.viewbymonth');
-    }
-    public function viewByOverall(){
-        return view('studentattendance.viewbyoverall');
-    }
-    public function viewBySubject(){
-        return view('studentattendance.viewbysubject');
-    }
 
 // INSERT DATE HOUR   
     public function storeDateandHourFirst(Request $request)

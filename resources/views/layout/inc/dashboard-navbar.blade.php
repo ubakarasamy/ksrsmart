@@ -105,7 +105,7 @@
 								<div id="subStaffAt" class="collapse ">
 									<ul class="nav">
 										<li><a href="{{route('staff-attendance')}}" class="">Make Attendance</a></li>
-										<li><a href="{{route('staff-attendance-edit')}}" class="">Edit Attendance</a></li>
+										{{-- <li><a href="{{route('staff-attendance-edit')}}" class="">Edit Attendance</a></li> --}}
 										<li >
 											<a href="#subStaffview" data-toggle="collapse" 
 											class="collapsed @if($route = Route::current()->getName() == 'student-attendance' || $route = Route::current()->getName() == 'staff-attendance' || $route = Route::current()->getName() == 'staff-attendance') <?php echo "active" ?> @endif"
@@ -137,7 +137,7 @@
 									<ul class="nav">
 										@if(auth()->user()->GetRole() === 1 || auth()->user()->GetRole() === 3 || auth()->user()->GetRole() === 4)
 										<li><a href="{{route('student-attendance')}}" class="">Make Attendance</a></li>
-										<li><a href="{{route('student-attendance-edit')}}" class="">Edit Attendance</a></li>
+										{{-- <li><a href="{{route('student-attendance-edit')}}" class="">Edit Attendance</a></li> --}}
 										@endif
 										<li >
 											<a href="#subStudAtView" data-toggle="collapse" 

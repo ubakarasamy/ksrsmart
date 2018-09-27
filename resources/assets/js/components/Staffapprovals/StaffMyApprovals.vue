@@ -24,6 +24,7 @@
                     </tr>
                 </tbody>
             </table>
+            <h3 style="text-align:center;" v-if="mApprovals.length === 0">No approval found</h3>
             </div>
             <div class="create-approval">
                 <h3>Create Approval</h3>
@@ -50,7 +51,7 @@
                             <textarea type="text" v-model="description" id="description" name="description" class="form-control" placeholder="Description"></textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-submit-under-approval-form">Submit</button>
                 </form>
             </div>
         </div>
@@ -147,3 +148,11 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.btn-submit-under-approval-form
+{
+    margin-top: 30px;
+}
+</style>
